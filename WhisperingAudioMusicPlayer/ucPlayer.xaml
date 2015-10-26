@@ -1,0 +1,178 @@
+﻿<UserControl x:Class="WhisperingAudioMusicPlayer.ucPlayer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="775">
+    
+    <Grid x:Name="playerMainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".5*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height=".1*"/>
+            <RowDefinition Height=".1*"/>
+            <RowDefinition Height=".1*"/>
+            <RowDefinition Height=".1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".5*" />
+            <ColumnDefinition Width=".5*" />
+        </Grid.ColumnDefinitions>
+
+        <ListBox x:Name="lstNowPlaying" Grid.Column="0" Grid.Row="0" Margin="5">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <EventSetter Event="MouseDoubleClick" Handler="ListBoxNowPlayingItem_MouseDoubleClick"/>
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="Transparent"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White"/>
+                    </Style.Resources>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+        </ListBox>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" MaxHeight="60">
+            <Button x:Name="btnPrevious" Margin="3,7,3,7" Click="btnPrevious_Click" ToolTip="previous" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!--<StackPanel x:Name="previousPanel"  MouseEnter="previousPanel_MouseEnter" MouseLeave="previousPanel_MouseLeave">
+                    <Image x:Name="previousImage" Source="images/btnPreviousSmall.png" Height="36" Width="36" Margin="12,0,12,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>-->
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Image Name="image" Source="images/btnPreviousSmall.png"  HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="image" Property="Source" Value="images/btnPreviousMouseOverSmall.png" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button x:Name="btnPlay" Margin="3,7,3,7" Click="btnPlay_Click" ToolTip="play" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!--<StackPanel x:Name="playPanel" MouseEnter="playPanel_MouseEnter" MouseLeave="playPanel_MouseLeave">
+                    <Image x:Name="playImage" Source="images/btnPlaySmall.png" Height="36" Width="36" Margin="12,0,12,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>-->
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Image x:Name="imagePlay" Source="images/btnPlaySmall.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button x:Name="btnPause" Margin="3,7,3,7" Click="btnPause_Click" ToolTip="pause" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!--<StackPanel x:Name="pausePanel" MouseEnter="pausePanel_MouseEnter" MouseLeave="pausePanel_MouseLeave">
+                    <Image x:Name="pauseImage" Source="images/btnPauseSmall.png" Height="36" Width="36" Margin="12,0,12,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>-->
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Image x:Name="imagePause" Source="images/btnPauseSmall.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button x:Name="btnStop" Margin="3,7,3,7" Click="btnStop_Click" ToolTip="stop" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!--<StackPanel x:Name="stopPanel" MouseEnter="stopPanel_MouseEnter" MouseLeave="stopPanel_MouseLeave">
+                    <Image x:Name="stopImage" Source="images/btnStopSmall.png" Height="36" Width="36" Margin="12,0,12,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>-->
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Image Name="imageStop" Source="images/btnStopSmall.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button x:Name="btnNext" Margin="3,7,3,7" Click="btnNext_Click" ToolTip="next" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!--<StackPanel x:Name="nextPanel" MouseEnter="nextPanel_MouseEnter" MouseLeave="nextPanel_MouseLeave">
+                    <Image x:Name="nextImage" Source="images/btnNextSmall.png" Height="36" Width="36" Margin="12,0,12,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>-->
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Image Name="image" Source="images/btnNextSmall.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="image" Property="Source" Value="images/btnNextMouseOverSmall.png" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" MaxHeight="60">
+            <Button x:Name="btnRepeat" Margin="3,7,3,7" Click="btnRepeat_Click" ToolTip="repeat" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Image Name="imageRepeat" Source="images/btnRepeatSmall.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button x:Name="btnLoop" Margin="3,7,3,7" Click="btnLoop_Click" ToolTip="loop within song" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!--<StackPanel>
+                    <Image x:Name="loopImage" Source="images/btnLoopSmall.png" Height="36" Width="36" Margin="12,0,12,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>-->
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Image Name="imageLoop" Source="images/btnLoopSmall.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button x:Name="btnShuffle"  Margin="3,7,3,7" Click="btnShuffle_Click" ToolTip="random" HorizontalAlignment="Center" VerticalAlignment="Center"> 
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Image Name="imageShuffle" Source="images/btnRandomSmall.png" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+        <Grid Grid.Row="3" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".5*" />
+                <ColumnDefinition Width=".5*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" x:Name="lblVolume" Content="Volume" HorizontalAlignment="Left" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" FontSize="12" VerticalContentAlignment="Bottom"/>
+            <Label Grid.Column="1" x:Name="lblVolumeContent" Content="0.00 dB" HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Right" FontSize="12" VerticalContentAlignment="Bottom"/>
+        </Grid>
+        <Slider x:Name="sldrVolume" Grid.Row="4" Grid.Column="0" Minimum="0" Maximum="601" IsMoveToPointEnabled="False" IsSnapToTickEnabled="True" SmallChange="1" LargeChange="10" Thumb.DragCompleted="sldrVolume_DragCompleted"  ValueChanged="sldrVolume_ValueChanged"/>
+        <Grid Grid.Row="5" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".5*" />
+                <ColumnDefinition Width=".5*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" x:Name="lblCurrentTime" Foreground="Blue" Content="" HorizontalAlignment="Left" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" FontSize="14" VerticalContentAlignment="Bottom"/>
+            <Label Grid.Column="1" x:Name="lblTotalTime" Foreground="Blue" Content="" HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Right" FontSize="14" VerticalContentAlignment="Bottom"/>
+        </Grid>
+        <ProgressBar x:Name="prgBarElapsedTime" Grid.Row="6" Grid.Column="0" VerticalAlignment="Top" Foreground="SteelBlue" Height="15" MouseLeftButtonDown="prgBarElapsedTime_MouseLeftButtonDown"/>
+        
+        <Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="7">
+            <Grid.RowDefinitions>
+                <RowDefinition Height=".05*" MinHeight="23"/>
+                <RowDefinition Height=".05*" MinHeight="23"/>
+                <RowDefinition Height=".05*" MinHeight="23"/>
+                <RowDefinition Height=".05*" MinHeight="23"/>
+                <RowDefinition Height=".05*" MinHeight="23"/>
+                <RowDefinition Height=".05*" MinHeight="23"/>
+                <RowDefinition Height=".7*"/><!--Album image -->
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".12*" />
+                <ColumnDefinition Width=".88*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" x:Name="lblTitle" Content="Title " HorizontalAlignment="Left" FontFamily="Segoe UI Semibold" FontWeight="Bold"/>
+            <Label Grid.Row="0" Grid.Column="1" x:Name="lblTitleContent" Foreground="Firebrick" Content="" HorizontalAlignment="Left" FontFamily="Segoe UI Semibold"/>
+            <Label Grid.Row="1" Grid.Column="0" x:Name="lblArtist" Content="Artist " HorizontalAlignment="Left" FontFamily="Segoe UI Semibold" FontWeight="Bold"/>
+            <Label Grid.Row="1" Grid.Column="1" x:Name="lblArtistContent" Foreground="Firebrick" Content="" HorizontalAlignment="Left" FontFamily="Segoe UI Semibold"/>
+            <Label Grid.Row="2" Grid.Column="0" x:Name="lblAlbum" Content="Album " HorizontalAlignment="Left" FontFamily="Segoe UI Semibold" FontWeight="Bold"/>
+            <Label Grid.Row="2" Grid.Column="1" x:Name="lblAlbumContent" Foreground="Firebrick" Content="" FontFamily="Segoe UI Semibold"/>
+            <Label Grid.Row="3" Grid.Column="0" x:Name="lblGenre" Content="Genre " HorizontalAlignment="Left" FontFamily="Segoe UI Semibold" FontWeight="Bold"/>
+            <Label Grid.Row="3" Grid.Column="1" x:Name="lblGenreContent" Foreground="Firebrick" Content="" HorizontalAlignment="Left" FontFamily="Segoe UI Semibold"/>
+            <Label Grid.Row="4" Grid.Column="0" x:Name="lblYear" Content="Year " HorizontalAlignment="Left" FontFamily="Segoe UI Semibold" FontWeight="Bold"/>
+            <Label Grid.Row="4" Grid.Column="1" x:Name="lblYearContent" Foreground="Firebrick" Content="" HorizontalAlignment="Left" FontFamily="Segoe UI Semibold"/>
+            <Label Grid.Row="5" Grid.Column="0" x:Name="lblSampleRate" Content="Rate " HorizontalAlignment="Left" FontFamily="Segoe UI Semibold" FontWeight="Bold"/>
+            <Label Grid.Row="5" Grid.Column="1" x:Name="lblSampleRateContent" Foreground="Firebrick" Content="" HorizontalAlignment="Left" FontFamily="Segoe UI Semibold"/>
+            <Image x:Name="albumImage" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Image.Effect>
+                    <DropShadowEffect Direction="225" Color="#FFB6C2CB" ShadowDepth="8" BlurRadius="18" />
+                </Image.Effect>
+            </Image>
+        </Grid>
+    </Grid>
+
+</UserControl>

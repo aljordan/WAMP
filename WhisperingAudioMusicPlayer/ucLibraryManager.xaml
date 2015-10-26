@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="WhisperingAudioMusicPlayer.ucLibraryManager"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="775">
+    <Grid Background="#FFE5E5E5">
+        <Label x:Name="lblLibraries" Content="Libraries" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.445,-0.151" Width="286" FontWeight="Bold"/>
+        <ListBox x:Name="lstLibraries" HorizontalAlignment="Left" Height="141" Margin="10,41,0,0" VerticalAlignment="Top" Width="286" ScrollViewer.VerticalScrollBarVisibility="Visible" SelectionChanged="lstLibraries_SelectionChanged"/>
+        <Button x:Name="btnAddLibrary" Content="Create" HorizontalAlignment="Left" Margin="312,41,0,0" VerticalAlignment="Top" Width="72" Click="btnAddLibrary_Click"/>
+        <Button x:Name="btnRemoveLibrary" Content="Remove" HorizontalAlignment="Left" Margin="312,160,0,0" VerticalAlignment="Top" Width="72" Click="btnRemoveLibrary_Click"/>
+        <Label x:Name="lblStatus" Content="Status:" HorizontalAlignment="Left" Margin="10,202,0,0" VerticalAlignment="Top" Width="52" FontWeight="Bold"/>
+        <Label x:Name="lblStatusUpdate" Content="" HorizontalAlignment="Left" Margin="62,202,0,0" VerticalAlignment="Top" Width="678"/>
+        <Button x:Name="btnUpdateLibrary" Content="Update" HorizontalAlignment="Left" Margin="312,98,0,0" VerticalAlignment="Top" Width="72" Click="btnUpdateLibrary_Click"/>
+    </Grid>
+</UserControl>

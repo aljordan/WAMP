@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="WhisperingAudioMusicPlayer.ucPreferences"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="775">
+
+    <Grid  Background="{x:Null}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".05*" />
+            <RowDefinition Height=".50*" />
+            <RowDefinition Height=".05*" />
+            <RowDefinition Height=".10*" />
+            <RowDefinition Height=".05*" />
+            <RowDefinition Height=".10*" />
+            <RowDefinition Height=".10*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".45*" />
+            <ColumnDefinition Width=".45*" />
+            <ColumnDefinition Width=".10*" />
+        </Grid.ColumnDefinitions>
+
+        <Label x:Name="lblAudioDevices" Content="Audio Output Devices" FontWeight="Bold" VerticalAlignment="Bottom"/>
+        <ListBox x:Name="lstAudioDevices" BorderThickness="1" Background="{x:Null}" Grid.Column="0" Grid.Row="1" Margin="5" SelectionChanged="lstAudioDevices_SelectionChanged">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="Transparent"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White"/>
+                    </Style.Resources>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+        <Label x:Name="lblLibraries" Content="Libraries" Grid.Column="1" Grid.Row="0" FontWeight="Bold" VerticalAlignment="Bottom"/>
+        <ListBox x:Name="lstLibraries" BorderThickness="1" Background="{x:Null}" Grid.Column="1" Grid.Row="1" Margin="5" SelectionChanged="lstLibraries_SelectionChanged">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="Transparent"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White"/>
+                    </Style.Resources>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom">
+            <Label x:Name="lblDeviceLatency" Content="Device Latency"  FontWeight="Bold"/>
+            <Label x:Name="lblChosenLatency" Content="" Foreground="Blue"/>
+        </StackPanel>
+        <Slider x:Name="sldrDeviceLatency" Grid.Column="0" Grid.Row="3" Margin="5,0,10,0" SelectionStart="25" SelectionEnd="25" IsSnapToTickEnabled="True" TickFrequency="25" Maximum="500" Minimum="25" ValueChanged="sldrDeviceLatency_ValueChanged"/>
+        <!--<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="4" VerticalAlignment="Bottom">
+            <Label x:Name="lblSwitchTracks" Content="Switch Tracks"  FontWeight="Bold"/>
+            <Label x:Name="lblSwitchTracksContent" Content="0 milliseconds" Foreground="Blue"/>
+        </StackPanel>
+        <Slider x:Name="sldrSwitchTracks" Grid.Column="0" Grid.Row="5" Margin="5,0,10,0" SelectionStart="25" SelectionEnd="25" IsSnapToTickEnabled="True" TickFrequency="1" Maximum="160" Minimum="0" ValueChanged="sldrSwitchTracks_ValueChanged"/>-->
+        <StackPanel Margin="0,5,0,0" Orientation="Vertical" Grid.Column="2" Grid.Row="1">
+            <Button x:Name="btnAddLibrary" Content="Create" Width="72" Margin="0,0,0,30" Click="btnAddLibrary_Click"/>
+            <Button x:Name="btnUpdateLibrary" Content="Update" Width="72" Margin="0,0,0,30" Click="btnUpdateLibrary_Click"/>
+            <Button x:Name="btnRemoveLibrary" Content="Remove" Width="72" Click="btnRemoveLibrary_Click"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="3" VerticalAlignment="Bottom">
+            <Label x:Name="lblStatus" Content="Status:"  FontWeight="Bold"/>
+            <Label x:Name="lblStatusUpdate" Content="" Foreground="Blue"/>
+        </StackPanel>
+        <CheckBox x:Name="chkMemoryPlayEnabled" Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom" Content="Play files from memory" FontWeight="Bold" IsChecked="False" Checked="chkMemoryPlayEnabled_Checked" Unchecked="chkMemoryPlayEnabled_Checked"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Margin="0,2,0,0" VerticalAlignment="Top">
+            <CheckBox x:Name="chkVolumeEnabled" Content="Enable Volume Control" FontWeight="Bold" IsChecked="False" Checked="chkVolumeEnabled_Checked" Unchecked="chkVolumeEnabled_Checked"/>
+            <CheckBox x:Name="chkAcourateAsioVolume" Margin="6,0,0,0" Content="Volume via AcourateAsio" FontWeight="Bold" IsChecked="False" Checked="chkAcourateAsioVolume_Checked"  Unchecked="chkAcourateAsioVolume_Checked" IsEnabled="false"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

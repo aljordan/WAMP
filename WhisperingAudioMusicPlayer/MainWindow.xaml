@@ -1,0 +1,43 @@
+﻿<Window x:Class="WhisperingAudioMusicPlayer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:uControl="clr-namespace:WhisperingAudioMusicPlayer"
+        Title="Whispering Audio Music Player" Height="600" Width="800">
+
+    <Window.Background>
+        <!--<RadialGradientBrush Center="-0.047,0.553" GradientOrigin="-0.047,0.553" RadiusY="1.231" RadiusX="0.8">
+            <GradientStop Offset="1" Color="LightSteelBlue"/>
+            <GradientStop Color="SlateGray"/>
+        </RadialGradientBrush>-->
+        <LinearGradientBrush>
+            <GradientStop Offset="1" Color="LightSteelBlue"/>
+            <GradientStop Color="SlateGray"/>
+        </LinearGradientBrush>
+    </Window.Background>
+
+
+    <Grid>
+        <TabControl x:Name="tabMain" BorderThickness="0" BorderBrush="SlateGray">
+            <TabControl.Background>
+                <!--<RadialGradientBrush Center="-0.047,0.553" GradientOrigin="-0.047,0.553" RadiusY="1.231" RadiusX="0.8">
+                    <GradientStop Offset="1" Color="LightSteelBlue"/>
+                    <GradientStop Color="SlateGray"/>
+                </RadialGradientBrush>-->
+                <LinearGradientBrush>
+                    <GradientStop Offset="1" Color="LightSteelBlue"/>
+                    <GradientStop Color="SlateGray"/>
+                </LinearGradientBrush>
+            </TabControl.Background>
+
+            <TabItem Header="Player">
+                <uControl:ucPlayer x:Name="playerControl" />
+            </TabItem>
+            <TabItem Header="Playlist Editor">
+                <uControl:ucPlaylistEditor x:Name="playlistEditorControl" />
+            </TabItem>
+            <TabItem Header="Preferences">
+                <uControl:ucPreferences x:Name="preferencesControl" />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="WhisperingAudioMusicPlayer.ucPlaylistEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="775">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".3*"/>
+            <RowDefinition Height=".7*"/>
+        </Grid.RowDefinitions>
+
+        <!--Top row of main grid-->
+        <Grid Grid.Row="0">
+             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".5*"/>
+                <ColumnDefinition Width=".5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height=".45*"/>
+                    <RowDefinition Height=".55*" MinHeight="75"/>
+                </Grid.RowDefinitions>
+
+                <GroupBox Grid.Row="0" Grid.Column="0" Header="Options" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <CheckBox x:Name="chkSendPlaylistToPlayer" Content="Send playlist changes to player" Checked="chkSendPlaylistToPlayer_Checked" Unchecked="chkSendPlaylistToPlayer_Checked" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                </GroupBox>
+
+                <GroupBox Grid.Row="1" Grid.Column="0" x:Name="grpSearch" Header="Search" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height=".3*" MinHeight="30"/>
+                            <RowDefinition Height=".2*" MinHeight="24"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width=".2*"/>
+                            <ColumnDefinition Width=".2*"/>
+                            <ColumnDefinition Width=".2*"/>
+                            <ColumnDefinition Width=".2*"/>
+                            <ColumnDefinition Width=".2*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" x:Name="txtSearchString" Margin="5"  TextWrapping="Wrap" VerticalAlignment="Top" KeyUp="txtSearchString_KeyUp"/>
+                        <RadioButton Grid.Row="1" Grid.Column="0" x:Name="rdoArtistSearch" Content="Artist" Margin="5" HorizontalAlignment="Left" GroupName="rdoSearch"/>
+                        <RadioButton Grid.Row="1" Grid.Column="1" x:Name="rdoAlbumSearch" Content="Album" Margin="5" HorizontalAlignment="Left" GroupName="rdoSearch"/>
+                        <RadioButton Grid.Row="1" Grid.Column="2" x:Name="rdoSongSearch" Content="Song" Margin="5" HorizontalAlignment="Left" GroupName="rdoSearch"/>
+                        <Button Grid.Row="1" Grid.Column="3" x:Name="btnSearch" Content="Search" MinWidth="50" Margin="5,0,5,0" HorizontalAlignment="Left" Click="btnSearch_Click"/>
+                        <Button Grid.Row="1" Grid.Column="4" x:Name="btnClearSearch" Content="Clear" MinWidth="50" Margin="5,0,5,0" HorizontalAlignment="Left" Click="btnClearSearch_Click"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+            <GroupBox x:Name="grpGenres" Header="Genres" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ListBox x:Name="lstGenres" Margin="5" SelectionChanged="lstGenres_SelectionChanged"/>
+            </GroupBox>
+        </Grid>
+
+        <!--Bottom row of main grid-->
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height=".08*" MinHeight="24"/>
+                <RowDefinition Height=".92*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".29*"/>
+                <ColumnDefinition Width=".29*"/>
+                <ColumnDefinition Width=".29*"/>
+                <ColumnDefinition Width=".1*"/>
+                <ColumnDefinition Width=".29*"/>
+                <ColumnDefinition Width=".09*"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="lblArtists" Grid.Row="0" Grid.Column="0" Content="Artists" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
+            <ListBox x:Name="lstArtists" Grid.Row="1" Grid.Column="0" Margin="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="lstArtists_SelectionChanged"/>
+            <Label x:Name="lblAlbums" Grid.Row="0" Grid.Column="1" Content="Albums" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
+            <ListBox x:Name="lstAlbums" Grid.Row="1" Grid.Column="1" Margin="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="lstAlbums_SelectionChanged" MouseDoubleClick="lstAlbums_MouseDoubleClick"/>
+            <Label x:Name="lblSongs" Grid.Row="0" Grid.Column="2" Content="Songs" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
+            <ListBox x:Name="lstSongs" Grid.Row="1" Grid.Column="2" Margin="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Extended" MouseDoubleClick="lstSongs_MouseDoubleClick"/>
+            <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="3">
+                <Button x:Name="btnAddSongs" Content="Add" Margin="0,2,0,3" HorizontalAlignment="Center" VerticalAlignment="Top" MinWidth="50" Click="btnAddSongs_Click"/>
+                <Button x:Name="btnRemoveFromPlaylist" Content="Remove" Margin="0,3,0,3" HorizontalAlignment="Center" VerticalAlignment="Top" MinWidth="50" Click="btnRemoveFromPlaylist_Click"/>
+            </StackPanel>
+            <Label x:Name="lblPlaylist" Grid.Row="0" Grid.Column="4" Content="Playlist" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
+            <ListBox x:Name="lstPlaylist" Grid.Row="1" Grid.Column="4" Margin="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Extended"/>
+            <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="5" VerticalAlignment="Stretch">
+                <!--<Button x:Name="btnPlayPlaylist" Content="Play" HorizontalAlignment="Center" Margin="0,2,0,70" VerticalAlignment="Top" MinWidth="39" Click="btnPlayPlaylist_Click"/>-->
+                <Button x:Name="btnLoadPlaylist" Content="Load" HorizontalAlignment="Center" Margin="0,2,0,3" VerticalAlignment="Top" MinWidth="39" Click="btnLoadPlaylist_Click"/>
+                <Button x:Name="btnSavePlaylist" Content="Save" HorizontalAlignment="Center" Margin="0,3,0,100" VerticalAlignment="Top" MinWidth="39" Click="btnSavePlaylist_Click"/>
+                <Button x:Name="btnClearPlaylist" Content="Clear" HorizontalAlignment="Center" Margin="0,3,0,0" VerticalAlignment="Bottom" MinWidth="39" Click="btnClearPlaylist_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
