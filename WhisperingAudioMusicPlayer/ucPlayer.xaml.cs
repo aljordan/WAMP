@@ -10,6 +10,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using WhisperingAudioMusicLibrary;
 using WhisperingAudioMusicEngine;
+// Below are for network features
+using System.ServiceModel;
+using System.ServiceModel.Description;
+
 
 namespace WhisperingAudioMusicPlayer
 {
@@ -23,6 +27,7 @@ namespace WhisperingAudioMusicPlayer
     /// </summary>
     public partial class ucPlayer : UserControl
     {
+        private NetworkControlService networkControlService;
         enum ButtonClicked { Play, Pause, Stop };
         private Playlist currentPlaylist;
         private AudioOutput selectedOutput;
@@ -94,6 +99,7 @@ namespace WhisperingAudioMusicPlayer
             else
                 musicEngine.MemoryPlay = false;
 
+
             /* 
              * Pulling the following out of the constructor and into a separate
              * method that is called from the main window after all children
@@ -109,6 +115,11 @@ namespace WhisperingAudioMusicPlayer
         {
             IsRepeating = Properties.Settings.Default.IsRepeating;
             IsRandom = Properties.Settings.Default.IsRandom;
+
+            networkControlService = new NetworkControlService();
+            networkControlService.startNetworkService();
+            networkControlService.SetPlayer(this);
+
         }
 
         public void Cleanup()
@@ -123,6 +134,8 @@ namespace WhisperingAudioMusicPlayer
             }
             Playlist p = new Playlist("default", list);
             p.SavePlaylist();
+
+            networkControlService.stopNetworkService();
         }
 
         public Track CurrentTrack
@@ -145,6 +158,63 @@ namespace WhisperingAudioMusicPlayer
         {
             btnPlay.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
             isPaused = false;
+        }
+
+        public void Stop()
+        {
+            btnStop.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+
+        }
+
+        public void Next()
+        {
+            btnNext.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+
+        }
+
+        public void Previous()
+        {
+            btnPrevious.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+
+        }
+
+        public string ChangeVolume(string direction)
+        {
+            Console.WriteLine(direction);
+            if (!isVolumeEnabled)
+                return "Volume not enabled in player.";
+
+            double volume = sldrVolume.Value;
+            switch (direction.ToLower())
+            {
+                case "up":
+                    volume += 10;
+                    if (volume > 601.0)
+                        volume = 601;
+                    break;
+                case "down":
+                    volume -= 10;
+                    if (volume < 0)
+                        volume = 0;
+                    break;
+                default:
+                    return "Failure: Bad direction command";
+            }
+
+            sldrVolume.Value = volume;
+
+            float dbVolume;
+            double dB = (volume - 601) / 10;
+            if (dB < -60)
+                dbVolume = 0;
+            else
+                dbVolume = (float)Math.Pow(10, dB / 20);
+
+            musicEngine.Volume = dbVolume;
+            if (sldrVolume.Value == 0)
+                lblVolumeContent.Content = "Muted";
+
+            return lblVolumeContent.Content.ToString();
         }
 
         public bool IsRandom
