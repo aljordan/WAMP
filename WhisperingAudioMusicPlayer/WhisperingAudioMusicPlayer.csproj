@@ -96,6 +96,7 @@
     </ApplicationDefinition>
     <Compile Include="INetworkControlService.cs" />
     <Compile Include="MemoryPlayEnabledEventArgs.cs" />
+    <Compile Include="NetworkControlEnabledEventArgs.cs" />
     <Compile Include="NetworkControlService.cs" />
     <Compile Include="PlayerHTMLBuilder.cs" />
     <Compile Include="SavePlaylistDialog.xaml.cs">

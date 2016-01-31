@@ -13,6 +13,7 @@ namespace WhisperingAudioMusicPlayer
     public delegate void SelectedLibraryChangedEventHandler(object sender, SelectedLibraryChangedEventArgs e);
     public delegate void VolumeEnabledEventHandler(object sender, VolumeEnabledEventArgs e);
     public delegate void AcourateVolumeEnabledEventHandler(object sender, VolumeEnabledEventArgs e);
+    public delegate void NetworkControlEnabledEventHandler(object sender, NetworkControlEnabledEventArgs e);
     public delegate void MemoryPlayEnabledEventHandler(object sender, MemoryPlayEnabledEventArgs e);
 
     /// <summary>
@@ -26,6 +27,7 @@ namespace WhisperingAudioMusicPlayer
         public event SelectedLibraryChangedEventHandler SelectedLibraryChangedEvent;
         public event VolumeEnabledEventHandler VolumeEnabledEvent;
         public event AcourateVolumeEnabledEventHandler AcourateVolumeEnabledEvent;
+        public event NetworkControlEnabledEventHandler NetworkControlEnabledEvent;
         public event MemoryPlayEnabledEventHandler MemoryPlayEnabledEvent;
         private List<MusicLibrary> libraries;
         private MusicLibrary selectedLibrary;
@@ -114,6 +116,16 @@ namespace WhisperingAudioMusicPlayer
             {
                 Console.WriteLine("Could not get memory play enabled state: " + e.Message);
             }
+
+            try
+            {
+                chkNetworkControlEnabled.IsChecked = Properties.Settings.Default.IsNetworkControlEnabled;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not get network control enabled state: " + e.Message);
+            }
+
         }
 
         public AudioOutput SelectedOutput
@@ -399,6 +411,14 @@ namespace WhisperingAudioMusicPlayer
                 handler(this, veea);
         }
 
+        protected virtual void OnRaiseNetworkControlEnabledEvent(NetworkControlEnabledEventArgs nceea)
+        {
+            NetworkControlEnabledEventHandler handler = NetworkControlEnabledEvent;
+            // Raise the event
+            if (handler != null)
+                handler(this, nceea);
+        }
+
         protected virtual void OnRaiseMemoryPlayEnabledEvent(MemoryPlayEnabledEventArgs mpeea)
         {
             MemoryPlayEnabledEventHandler handler = MemoryPlayEnabledEvent;
@@ -433,6 +453,22 @@ namespace WhisperingAudioMusicPlayer
             Properties.Settings.Default.IsAcourateVolumeEnabled = enableAcourateVolume;
             Properties.Settings.Default.Save();
             OnRaiseAcourateVolumeEnabledEvent(new VolumeEnabledEventArgs(enableAcourateVolume));
+        }
+
+        private void chkNetworkControlEnabled_Checked(object sender, RoutedEventArgs e)
+        {
+            bool enableNetworkControl = (bool)((CheckBox)sender).IsChecked;
+            Properties.Settings.Default.IsNetworkControlEnabled = enableNetworkControl;
+            Properties.Settings.Default.Save();
+            OnRaiseNetworkControlEnabledEvent(new NetworkControlEnabledEventArgs(enableNetworkControl));
+            if (enableNetworkControl)
+            {
+                lblBrowserAddress.Content = "http://" + PlayerHTMLBuilder.GetLocalIPAddress() + ":9090/wamp/player";
+            }
+            else
+            {
+                lblBrowserAddress.Content = "";
+            }
         }
 
 

@@ -152,5 +152,17 @@ namespace WhisperingAudioMusicPlayer.Properties {
                 this["IsAcourateVolumeEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsNetworkControlEnabled {
+            get {
+                return ((bool)(this["IsNetworkControlEnabled"]));
+            }
+            set {
+                this["IsNetworkControlEnabled"] = value;
+            }
+        }
     }
 }

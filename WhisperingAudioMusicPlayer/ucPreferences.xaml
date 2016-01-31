@@ -8,13 +8,13 @@
 
     <Grid  Background="{x:Null}">
         <Grid.RowDefinitions>
-            <RowDefinition Height=".05*" />
-            <RowDefinition Height=".50*" />
-            <RowDefinition Height=".05*" />
-            <RowDefinition Height=".10*" />
-            <RowDefinition Height=".05*" />
-            <RowDefinition Height=".10*" />
-            <RowDefinition Height=".10*" />
+            <RowDefinition Height="26*" />
+            <RowDefinition Height="263*" />
+            <RowDefinition Height="26*" />
+            <RowDefinition Height="28*" />
+            <RowDefinition Height="62*" />
+            <RowDefinition Height="43*" />
+            <RowDefinition Height="52*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width=".45*" />
@@ -22,7 +22,7 @@
             <ColumnDefinition Width=".10*" />
         </Grid.ColumnDefinitions>
 
-        <Label x:Name="lblAudioDevices" Content="Audio Output Devices" FontWeight="Bold" VerticalAlignment="Bottom"/>
+        <Label x:Name="lblAudioDevices" Content="Audio Output Devices" FontWeight="Bold" VerticalAlignment="Bottom" Height="26"/>
         <ListBox x:Name="lstAudioDevices" BorderThickness="1" Background="{x:Null}" Grid.Column="0" Grid.Row="1" Margin="5" SelectionChanged="lstAudioDevices_SelectionChanged">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
@@ -34,7 +34,7 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-        <Label x:Name="lblLibraries" Content="Libraries" Grid.Column="1" Grid.Row="0" FontWeight="Bold" VerticalAlignment="Bottom"/>
+        <Label x:Name="lblLibraries" Content="Libraries" Grid.Column="1" Grid.Row="0" FontWeight="Bold" VerticalAlignment="Bottom" Height="26"/>
         <ListBox x:Name="lstLibraries" BorderThickness="1" Background="{x:Null}" Grid.Column="1" Grid.Row="1" Margin="5" SelectionChanged="lstLibraries_SelectionChanged">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
@@ -46,7 +46,7 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom">
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom" Height="26">
             <Label x:Name="lblDeviceLatency" Content="Device Latency"  FontWeight="Bold"/>
             <Label x:Name="lblChosenLatency" Content="" Foreground="Blue"/>
         </StackPanel>
@@ -61,14 +61,18 @@
             <Button x:Name="btnUpdateLibrary" Content="Update" Width="72" Margin="0,0,0,30" Click="btnUpdateLibrary_Click"/>
             <Button x:Name="btnRemoveLibrary" Content="Remove" Width="72" Click="btnRemoveLibrary_Click"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="3" VerticalAlignment="Bottom">
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Height="26">
             <Label x:Name="lblStatus" Content="Status:"  FontWeight="Bold"/>
             <Label x:Name="lblStatusUpdate" Content="" Foreground="Blue"/>
         </StackPanel>
-        <CheckBox x:Name="chkMemoryPlayEnabled" Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom" Content="Play files from memory" FontWeight="Bold" IsChecked="False" Checked="chkMemoryPlayEnabled_Checked" Unchecked="chkMemoryPlayEnabled_Checked"/>
-        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Margin="0,2,0,0" VerticalAlignment="Top">
+        <CheckBox x:Name="chkMemoryPlayEnabled" Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom" Content="Play files from memory" FontWeight="Bold" OverridesDefaultStyle="False" Checked="chkMemoryPlayEnabled_Checked" Unchecked="chkMemoryPlayEnabled_Checked" Height="16"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Margin="0,2,0,0" VerticalAlignment="Top" Height="16">
             <CheckBox x:Name="chkVolumeEnabled" Content="Enable Volume Control" FontWeight="Bold" IsChecked="False" Checked="chkVolumeEnabled_Checked" Unchecked="chkVolumeEnabled_Checked"/>
             <CheckBox x:Name="chkAcourateAsioVolume" Margin="6,0,0,0" Content="Volume via AcourateAsio" FontWeight="Bold" IsChecked="False" Checked="chkAcourateAsioVolume_Checked"  Unchecked="chkAcourateAsioVolume_Checked" IsEnabled="false"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="4" Margin="0,2,0,0" VerticalAlignment="Top" Height="46">
+            <CheckBox x:Name="chkNetworkControlEnabled" Content="Network control" FontWeight="Bold" IsChecked="False" Checked="chkNetworkControlEnabled_Checked" Unchecked="chkNetworkControlEnabled_Checked" Height="19"/>
+            <Label x:Name="lblBrowserAddress" Content="" Foreground="Blue"/>
         </StackPanel>
     </Grid>
 </UserControl>

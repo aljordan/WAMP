@@ -40,8 +40,6 @@ namespace WhisperingAudioMusicPlayer
             // one endpoint per base address for each service contract implemented
             // by the service.
             host.Open();
-
-            Console.WriteLine("The service is ready at {0}", baseAddress);
         }
 
         public void stopNetworkService()

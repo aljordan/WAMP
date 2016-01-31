@@ -56,6 +56,8 @@ namespace WhisperingAudioMusicPlayer
             preferencesControl.AcourateVolumeEnabledEvent += HandleAcourateVolumeEnableEvent;
             // and the MemoryPlayEnabledEvent
             preferencesControl.MemoryPlayEnabledEvent += HandleMemoryPlayEnableEvent;
+            // and the NetworkControlEnabledEvent
+            preferencesControl.NetworkControlEnabledEvent += HandleNetworkControlEnableEvent;
 
             // Try to load the default playlist if it exists
             currentPlaylist = Playlist.OpenPlaylist("default");
@@ -111,6 +113,11 @@ namespace WhisperingAudioMusicPlayer
         void HandleAcourateVolumeEnableEvent(object sender, VolumeEnabledEventArgs veea)
         {
             playerControl.IsAcourateVolumeEnabled = veea.IsVolumeEnabled;
+        }
+
+        void HandleNetworkControlEnableEvent(object sender, NetworkControlEnabledEventArgs nceea)
+        {
+            playerControl.IsNetworkControlEnabled = nceea.IsNetworkControlEnabled;
         }
 
         void HandleMemoryPlayEnableEvent(object sender, MemoryPlayEnabledEventArgs mpeea)

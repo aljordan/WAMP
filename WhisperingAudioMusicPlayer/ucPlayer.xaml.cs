@@ -46,6 +46,7 @@ namespace WhisperingAudioMusicPlayer
         private int loopEnd;
         private bool isVolumeEnabled;
         private bool isAcourateVolumeEnabled;
+        private bool isNetworkControlEnabled;
 
         public ucPlayer()
         {
@@ -99,6 +100,11 @@ namespace WhisperingAudioMusicPlayer
             else
                 musicEngine.MemoryPlay = false;
 
+            if (Properties.Settings.Default.IsNetworkControlEnabled)
+                isNetworkControlEnabled = true;
+            else
+                isNetworkControlEnabled = false;
+           
 
             /* 
              * Pulling the following out of the constructor and into a separate
@@ -116,12 +122,13 @@ namespace WhisperingAudioMusicPlayer
             IsRepeating = Properties.Settings.Default.IsRepeating;
             IsRandom = Properties.Settings.Default.IsRandom;
 
-            networkControlService = new NetworkControlService();
-            networkControlService.startNetworkService();
-            networkControlService.SetPlayer(this);
-
+            IsNetworkControlEnabled = Properties.Settings.Default.IsNetworkControlEnabled;
         }
 
+        /// <summary>
+        /// Save currently playing playlist and cleanup open resources.
+        /// Generally called by the Main Window when the application is closing.
+        /// </summary>
         public void Cleanup()
         {
             musicEngine.Stop();
@@ -135,7 +142,10 @@ namespace WhisperingAudioMusicPlayer
             Playlist p = new Playlist("default", list);
             p.SavePlaylist();
 
-            networkControlService.stopNetworkService();
+            if (networkControlService != null)
+            {
+                networkControlService.stopNetworkService();
+            }
         }
 
         public Track CurrentTrack
@@ -154,33 +164,51 @@ namespace WhisperingAudioMusicPlayer
             }
         }
 
+        /// <summary>
+        /// Starts playback - For external control of the player
+        /// </summary>
         public void Play()
         {
             btnPlay.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
             isPaused = false;
         }
 
+        /// <summary>
+        /// Stops playback - For external control of the player
+        /// </summary>
         public void Stop()
         {
             btnStop.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
 
         }
 
+        /// <summary>
+        /// Moves to next song in the playlist and starts playback if not already playing.
+        /// For external control of the player.
+        /// </summary>
         public void Next()
         {
             btnNext.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
 
         }
 
+        /// <summary>
+        /// Moves to previous song in the playlist and starts playback if not already playing.
+        /// For external control of the player.
+        /// </summary>
         public void Previous()
         {
             btnPrevious.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
 
         }
 
+        /// <summary>
+        /// Lowers or raises volume 1 dB - For external control of the player.
+        /// </summary>
+        /// <param name="direction">string: "up" raises volume - "down" lowers volume</param>
+        /// <returns>String representing the current volume, or a message if volume is not enabled.</returns>
         public string ChangeVolume(string direction)
         {
-            Console.WriteLine(direction);
             if (!isVolumeEnabled)
                 return "Volume not enabled in player.";
 
@@ -217,6 +245,9 @@ namespace WhisperingAudioMusicPlayer
             return lblVolumeContent.Content.ToString();
         }
 
+        /// <summary>
+        /// Property to set random playback of playlist.
+        /// </summary>
         public bool IsRandom
         {
             get { return isRandom; }
@@ -245,6 +276,9 @@ namespace WhisperingAudioMusicPlayer
             }
         }
 
+        /// <summary>
+        /// Property to set playlist repitition
+        /// </summary>
         public bool IsRepeating
         {
             get { return isRepeating; }
@@ -270,6 +304,10 @@ namespace WhisperingAudioMusicPlayer
             }
         }
 
+        /// <summary>
+        /// Poperty to set the current playlist.
+        /// Begins playback if everything looks good.
+        /// </summary>
         public Playlist CurrentPlaylist
         {
             get { return currentPlaylist; }
@@ -304,6 +342,7 @@ namespace WhisperingAudioMusicPlayer
                     Play();
             }
         }
+
 
         public bool IsVolumeEnabled
         {
@@ -354,6 +393,29 @@ namespace WhisperingAudioMusicPlayer
                         sldrVolume.IsEnabled = false;
                     }
                 }
+            }
+        }
+
+        public bool IsNetworkControlEnabled
+        {
+            set
+            {
+                isNetworkControlEnabled = value;
+                if (value == true)
+                {
+                    networkControlService = new NetworkControlService();
+                    networkControlService.startNetworkService();
+                    networkControlService.SetPlayer(this);
+                }
+                else
+                {
+                    if (networkControlService != null)
+                    {
+                        networkControlService.stopNetworkService();
+                        networkControlService = null;
+                    }
+                }
+
             }
         }
 
