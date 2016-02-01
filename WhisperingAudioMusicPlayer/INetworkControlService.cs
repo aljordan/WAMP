@@ -79,6 +79,17 @@ namespace WhisperingAudioMusicPlayer
         string Previous();
 
         /// <summary>
+        /// Gets current playlist
+        /// </summary>
+        /// <returns>String of JSON</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "currentplaylist/")]
+        string CurrentPlaylist();
+
+        /// <summary>
         /// Lowers or raises the volume if enabled in the Player
         /// </summary>
         /// <param name="direction">String that should be "down" or "up"</param>
@@ -89,6 +100,31 @@ namespace WhisperingAudioMusicPlayer
             BodyStyle = WebMessageBodyStyle.Wrapped,
             UriTemplate = "changevolume/{direction}")]
         string ChangeVolume(string direction);
+
+        /// <summary>
+        /// Play a specific playlist track
+        /// </summary>
+        /// <param name="id">string representing the library track id</param>
+        /// <returns>JSON string representing current playing track, or empty string if track not found</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "playtrack/{id}")]
+        string PlayTrack(string id);
+
+
+        /// <summary>
+        /// Gets current player volume
+        /// </summary>
+        /// <returns>String</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "volume/")]
+        string GetVolume();
+
 
         void SetPlayer(ucPlayer master);
     }

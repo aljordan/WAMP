@@ -60,8 +60,7 @@ namespace WhisperingAudioMusicPlayer
 
         public string Play()
         {
-            player.Play();
-            return "Success";
+            return player.Play();
         }
 
         public string Stop()
@@ -72,19 +71,32 @@ namespace WhisperingAudioMusicPlayer
 
         public string Next()
         {
-            player.Next();
-            return "Success";
+            return player.Next();
         }
         
         public string Previous()
         {
-            player.Previous();
-            return "Success";
+            return player.Previous();
         }
 
         public string ChangeVolume(string direction)
         {
             return player.ChangeVolume(direction);
+        }
+
+        public string PlayTrack(string id)
+        {
+            return player.PlayPlaylistTrack(Convert.ToInt64(id));
+        }
+
+        public string GetVolume()
+        {
+            return player.GetVolume();
+        }
+
+        public string CurrentPlaylist()
+        {
+            return player.GetCurrentPlaylistJSON();
         }
 
         public void SetPlayer(ucPlayer master)

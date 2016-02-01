@@ -13,6 +13,7 @@ using WhisperingAudioMusicEngine;
 // Below are for network features
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.Web.Script.Serialization;
 
 
 namespace WhisperingAudioMusicPlayer
@@ -167,10 +168,41 @@ namespace WhisperingAudioMusicPlayer
         /// <summary>
         /// Starts playback - For external control of the player
         /// </summary>
-        public void Play()
+        /// <returns>JSON string representing track being played, or empty string</returns>
+        public string Play()
         {
             btnPlay.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
             isPaused = false;
+            try
+            {
+                Track t = (Track)lstNowPlaying.Items[lstNowPlaying.SelectedIndex];
+                return new JavaScriptSerializer().Serialize(t);
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Play a track in the current playlist
+        /// </summary>
+        /// <param name="id">long containing the ID of the track to be played</param>
+        /// <returns>JSON string representing track being played, or empty string</returns>
+        public string PlayPlaylistTrack(long id)
+        {
+            for (int index = 0; index < lstNowPlaying.Items.Count; index++)
+            {
+                Track t = (Track)lstNowPlaying.Items[index];
+                if (t.Id == id)
+                {
+                    lstNowPlaying.SelectedIndex = index;
+                    isPlaying = true; //setting this so random play doesn't choose something else
+                    btnPlay.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+                    return new JavaScriptSerializer().Serialize(t);
+                }
+            }
+            return "";
         }
 
         /// <summary>
@@ -186,20 +218,47 @@ namespace WhisperingAudioMusicPlayer
         /// Moves to next song in the playlist and starts playback if not already playing.
         /// For external control of the player.
         /// </summary>
-        public void Next()
+        /// <returns>JSON string representing track being played, or empty string</returns>
+        public string Next()
         {
             btnNext.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
-
+            try
+            {
+                Track t = (Track)lstNowPlaying.Items[lstNowPlaying.SelectedIndex];
+                return new JavaScriptSerializer().Serialize(t);
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
         }
 
         /// <summary>
         /// Moves to previous song in the playlist and starts playback if not already playing.
         /// For external control of the player.
         /// </summary>
-        public void Previous()
+        /// <returns>JSON string representing track being played, or empty string</returns>
+        public string Previous()
         {
             btnPrevious.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            try
+            {
+                Track t = (Track)lstNowPlaying.Items[lstNowPlaying.SelectedIndex];
+                return new JavaScriptSerializer().Serialize(t);
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
+        }
 
+        /// <summary>
+        /// Get the current player volume. For external control of the player.
+        /// </summary>
+        /// <returns>String representing current player volume</returns>
+        public string GetVolume()
+        {
+            return lblVolumeContent.Content.ToString();
         }
 
         /// <summary>
@@ -210,7 +269,7 @@ namespace WhisperingAudioMusicPlayer
         public string ChangeVolume(string direction)
         {
             if (!isVolumeEnabled)
-                return "Volume not enabled in player.";
+                return "not enabled";
 
             double volume = sldrVolume.Value;
             switch (direction.ToLower())
@@ -242,7 +301,19 @@ namespace WhisperingAudioMusicPlayer
             if (sldrVolume.Value == 0)
                 lblVolumeContent.Content = "Muted";
 
+            Properties.Settings.Default.CurrentVolume = sldrVolume.Value;
+            Properties.Settings.Default.Save();
+
             return lblVolumeContent.Content.ToString();
+        }
+
+        /// <summary>
+        /// Returns the current playlist in JSON string format
+        /// </summary>
+        /// <returns>String of json representing playlist</returns>
+        public String GetCurrentPlaylistJSON()
+        {
+            return new JavaScriptSerializer().Serialize(currentPlaylist);
         }
 
         /// <summary>
@@ -799,6 +870,10 @@ namespace WhisperingAudioMusicPlayer
             {
                 //lblVolumeContent.Content = "-" + "\u221E";
                 lblVolumeContent.Content = "volume muted";
+            }
+            else if (newValue == 601)
+            {
+                lblVolumeContent.Content = "max";
             }
             else
             {
