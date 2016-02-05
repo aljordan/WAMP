@@ -19,11 +19,94 @@ function populatePlaylist() {
                     '<span class="small">' + currentPlaylistJson[count].Album + '</span><br>' +
                     '</div><br>');
             }
-//            console.log(json[0]["Title"]);
         }
     });
 }
 
+function getGenres() {
+    $("#breadcrumb").empty();
+    $.ajax({
+        url: 'http://localhost:9090/wamp/genres',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            $('#playlistEditor').empty();
+            $('#breadcrumb').empty();
+            var genres = $.parseJSON(data.GetGenresResult);
+            for (var count = 0; count < genres.length; count++) {
+                //console.log(genres[count]);
+                $('#playlistEditor').append('<div>' +
+                    '<span class="large"><a class="large" onclick="getArtistsByGenre(\'' + genres[count].replace(/'/g, "\\'") + '\')" href="#">'
+                    + genres[count] + '</a></span><br>' +
+                    '</div>');
+            }
+
+            $('#breadcrumb').append('<a class="small" onclick="getGenres()" href="#">&nbsp;Genres</a>');
+        }
+    });
+}
+
+
+function getArtistsByGenre(genre) {
+    //$("#breadcrumb").empty();
+    $.ajax({
+        url: 'http://localhost:9090/wamp/artistsbygenre/' + genre,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            $('#playlistEditor').empty();
+            //$('#breadcrumb').empty();
+            var artists = $.parseJSON(data.GetArtistByGenreResult);
+            for (var count = 0; count < artists.length; count++) {
+                //console.log(genres[count]);
+                $('#playlistEditor').append('<div>' +
+                    '<span class="large"><a class="large" onclick="getAlbumsByArtist(\'' + artists[count].replace(/'/g, "\\'") + '\')" href="#">'
+                    + artists[count] + '</a></span><br>' +
+                    '</div>');
+            }
+
+            $('#breadcrumb').append('&nbsp;-&nbsp;<a class="small" onclick="getArtistsByGenre(\'' + genre.replace(/'/g, "\\'") + '\')" href="#">&nbsp;' + genre + '</a>');
+        }
+    });
+}
+
+function getAlbumsByArtist(artist) {
+    $.ajax({
+        url: 'http://localhost:9090/wamp/albumsbyartist/' + artist,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            $('#playlistEditor').empty();
+            var albums = $.parseJSON(data.GetAlbumsByArtistResult);
+            for (var count = 0; count < albums.length; count++) {
+                $('#playlistEditor').append('<div>' +
+                    '<span class="large"><a class="large" onclick="getSongsByAlbum(\'' + albums[count].replace(/'/g, "\\'") + '\')" href="#">'
+                    + albums[count] + '</a></span><br>' +
+                    '</div>');
+            }
+
+            $('#breadcrumb').append('&nbsp;-&nbsp;<a class="small" onclick="getAlbumsByArtist(\'' + artist.replace(/'/g, "\\'") + '\')" href="#">&nbsp;' + artist + '</a>');
+        }
+    });
+}
+
+function getSongsByAlbum(album) {
+    $.ajax({
+        url: 'http://localhost:9090/wamp/songsbyalbum/' + album,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            $('#playlistEditor').empty();
+            var songs = $.parseJSON(data.GetSongsByAlbumResult);
+            for (var count = 0; count < songs.length; count++) {
+                $('#playlistEditor').append('<div>' +
+                    '<span class="large"><a class="large" onclick="addSongToPlaylist(\'' + songs[count].Id + '\')" href="#">'
+                    + songs[count].Title + '</a></span><br>' +
+                    '</div>');
+            }
+        }
+    });
+}
 
 function play() {
     var xhttp = new XMLHttpRequest();
@@ -107,6 +190,29 @@ function playTrack(id) {
     };
     xhttp.open("GET", url, true);
     xhttp.send();
+}
+
+function addSongToPlaylist(id) {
+    $.ajax({
+        url: 'http://localhost:9090/wamp/addtrack/' + id,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            $("#playlist").empty();
+            var currentPlaylistJson = $.parseJSON(data.AddTrackResult);
+            for (var count = 0; count < currentPlaylistJson.length; count++) {
+                //var title = currentPlaylistJson[count].Title;
+                //console.log(title);
+                $('#playlist').append('<div>' +
+                    '<span class="large"><a class="large" onclick="playTrack(' + currentPlaylistJson[count].Id + ')" href="#">'
+                    + currentPlaylistJson[count].Title + '</a></span><br>' +
+                    '<span class="small">' + currentPlaylistJson[count].Artist + '</span><br>' +
+                    '<span class="small">' + currentPlaylistJson[count].Album + '</span><br>' +
+                    '</div><br>');
+            }
+        }
+    });
+
 }
 
 function changeVolume(direction) {

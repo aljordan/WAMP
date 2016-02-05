@@ -33,6 +33,7 @@ namespace WhisperingAudioMusicPlayer
         private Playlist currentPlaylist;
         private AudioOutput selectedOutput;
         private MusicEngine musicEngine;
+        private MusicLibrary selectedLibrary; // to pass along to network control class
         private Track currentTrack;
         private bool isRepeating;
         private bool isRandom;
@@ -375,6 +376,13 @@ namespace WhisperingAudioMusicPlayer
             }
         }
 
+        public string AddTrackToPlaylist(Track song)
+        {
+            currentPlaylist.Add(song);
+            lstNowPlaying.Items.Add(song);
+            return GetCurrentPlaylistJSON();
+        }
+
         /// <summary>
         /// Poperty to set the current playlist.
         /// Begins playback if everything looks good.
@@ -502,6 +510,15 @@ namespace WhisperingAudioMusicPlayer
         {
             get { return selectedOutput; }
             set { selectedOutput = value; }
+        }
+
+        public MusicLibrary SelectedLibrary
+        {
+            get { return selectedLibrary; }
+            set
+            {
+                selectedLibrary = value;
+            }
         }
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)

@@ -34,6 +34,13 @@ namespace WhisperingAudioMusicPlayer
             UriTemplate = "outputs/")]
         string AudioOutputs();
 
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "genres/")]
+        string GetGenres();
+
         /// <summary>
         /// Starts playback on the player if a playlist is loaded.
         /// </summary>
@@ -102,6 +109,42 @@ namespace WhisperingAudioMusicPlayer
         string ChangeVolume(string direction);
 
         /// <summary>
+        /// Get all artist in a genre
+        /// </summary>
+        /// <param name="genre">Musical genre</param>
+        /// <returns>String of json representing a list of all artist in a genre</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "artistsbygenre/{genre}")]
+        string GetArtistByGenre(string genre);
+
+        /// <summary>
+        /// Get albums by an artist
+        /// </summary>
+        /// <param name="genre">Artist name</param>
+        /// <returns>String of json representing a list of all albums by an artist</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "albumsbyartist/{artist}")]
+        string GetAlbumsByArtist(string artist);
+
+        /// <summary>
+        /// Get songs by an album
+        /// </summary>
+        /// <param name="genre">Album name</param>
+        /// <returns>String of json representing a list of all songs by an album</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "songsbyalbum/{album}")]
+        string GetSongsByAlbum(string album);
+
+        /// <summary>
         /// Play a specific playlist track
         /// </summary>
         /// <param name="id">string representing the library track id</param>
@@ -112,6 +155,19 @@ namespace WhisperingAudioMusicPlayer
             BodyStyle = WebMessageBodyStyle.Wrapped,
             UriTemplate = "playtrack/{id}")]
         string PlayTrack(string id);
+
+
+        /// <summary>
+        /// Add a track to the current playlist
+        /// </summary>
+        /// <param name="id">string representing the library track id</param>
+        /// <returns>JSON string representing success or failure</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "addtrack/{id}")]
+        string AddTrack(string id);
 
 
         /// <summary>

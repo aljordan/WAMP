@@ -4,7 +4,11 @@ using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.ServiceModel.Web;
 using WhisperingAudioMusicEngine;
+using WhisperingAudioMusicLibrary;
 using System.IO;
+using System.Web.Script.Serialization;
+
+
 
 namespace WhisperingAudioMusicPlayer
 {
@@ -58,6 +62,27 @@ namespace WhisperingAudioMusicPlayer
             return outputs;
         }
 
+        public string GetGenres()
+        {
+            return new JavaScriptSerializer().Serialize(player.SelectedLibrary.GetGenres());
+        }
+
+        public string GetArtistByGenre(string genre)
+        {
+            return new JavaScriptSerializer().Serialize(player.SelectedLibrary.GetArtistsByGenre(genre));
+        }
+
+        public string GetAlbumsByArtist(string artist)
+        {
+            return new JavaScriptSerializer().Serialize(player.SelectedLibrary.GetAlbumsByArtist(artist));
+        }
+
+        public string GetSongsByAlbum(string album)
+        {
+            return new JavaScriptSerializer().Serialize(player.SelectedLibrary.GetSongsByAlbum(album));
+        }
+
+
         public string Play()
         {
             return player.Play();
@@ -87,6 +112,12 @@ namespace WhisperingAudioMusicPlayer
         public string PlayTrack(string id)
         {
             return player.PlayPlaylistTrack(Convert.ToInt64(id));
+        }
+
+        public string AddTrack(string id)
+        {
+            Track song = player.SelectedLibrary.GetSongById(Convert.ToInt64(id));
+            return player.AddTrackToPlaylist(song);
         }
 
         public string GetVolume()

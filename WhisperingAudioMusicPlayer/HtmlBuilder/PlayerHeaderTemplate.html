@@ -23,14 +23,14 @@
         .left {
             display: inline-block;
             float: left;
-            width: 50%;
+            width: 49%;
             height: 100%;
         }
 
         .right {
             display: inline-block;
             float: right;
-            width: 50%;
+            width: 49%;
             height: 100%;
         }
 
@@ -45,7 +45,26 @@
             /*height: 20%;*/
             width: 100%;
             min-height: 80px;
+            max-height: 80px;
         }
+
+        .menu {
+            display: inline-block;
+            /*height: 20%;*/
+            width: 100%;
+            min-height: 80px;
+            max-height: 80px;
+        }
+
+        .playlistEditor {
+            display: inline-block;
+            text-align: left;
+            height: 75%;
+            width: 100%;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
 
         .playlist {
             display: inline-block;
@@ -68,15 +87,28 @@
             font-size: large;
         }
 
-        a.large, a.large:hover, a.large:visited, a.large:active {
+        a.large, a.large:link, a.large:hover, a.large:visited, a.large:active {
             /*color: #ffffff;*/
             color: inherit;
-        }
-
-        .large a:link {
-            color: #ffffff;
             text-decoration: none;
         }
+
+        a.medium, a.medium:link, a.medium:hover, a.medium:visited, a.medium:active {
+            /*color: #ffffff;*/
+            color: inherit;
+            text-decoration: none;
+        }
+
+        a.small, a.small:link, a.small:hover, a.small:visited, a.small:active {
+            /*color: #ffffff;*/
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /*.large a:link {
+            color: #ffffff;
+            text-decoration: none;
+        }*/
 
 
         .xlarge {

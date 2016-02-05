@@ -47,6 +47,7 @@ namespace WhisperingAudioMusicPlayer
             // was given to the control in the main window xaml.
             preferencesControl.SelectedLibraryChangedEvent += HandleSelectedLibraryChangedEvent;            
             playlistEditorControl.SelectedLibrary = preferencesControl.SelectedLibrary;
+            playerControl.SelectedLibrary = preferencesControl.SelectedLibrary;
 
             //Subscribe to Preferences control SelectedOutputchanged event
             preferencesControl.SelectedOutputChangedEvent += HandleSelectedOutputChangedEvent;
@@ -88,6 +89,7 @@ namespace WhisperingAudioMusicPlayer
         {
             selectedLibrary = slcea.SelectedLibrary;
             playlistEditorControl.SelectedLibrary = selectedLibrary;
+            playerControl.SelectedLibrary = selectedLibrary;
         }
 
 
