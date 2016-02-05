@@ -67,6 +67,16 @@ namespace WhisperingAudioMusicPlayer
             return new JavaScriptSerializer().Serialize(player.SelectedLibrary.GetGenres());
         }
 
+        public string GetArtists()
+        {
+            return new JavaScriptSerializer().Serialize(player.SelectedLibrary.GetArtists());
+        }
+
+        public string GetAlbums()
+        {
+            return new JavaScriptSerializer().Serialize(player.SelectedLibrary.GetAlbums());
+        }
+
         public string GetArtistByGenre(string genre)
         {
             return new JavaScriptSerializer().Serialize(player.SelectedLibrary.GetArtistsByGenre(genre));
@@ -118,6 +128,12 @@ namespace WhisperingAudioMusicPlayer
         {
             Track song = player.SelectedLibrary.GetSongById(Convert.ToInt64(id));
             return player.AddTrackToPlaylist(song);
+        }
+
+        public string RemoveTrack(string id)
+        {
+            Track song = player.SelectedLibrary.GetSongById(Convert.ToInt64(id));
+            return player.RemoveTrackFromPlaylist(song);
         }
 
         public string GetVolume()

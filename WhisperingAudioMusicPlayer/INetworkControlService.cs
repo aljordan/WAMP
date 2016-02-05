@@ -41,6 +41,20 @@ namespace WhisperingAudioMusicPlayer
             UriTemplate = "genres/")]
         string GetGenres();
 
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "artists/")]
+        string GetArtists();
+
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "albums/")]
+        string GetAlbums();
+
         /// <summary>
         /// Starts playback on the player if a playlist is loaded.
         /// </summary>
@@ -161,13 +175,26 @@ namespace WhisperingAudioMusicPlayer
         /// Add a track to the current playlist
         /// </summary>
         /// <param name="id">string representing the library track id</param>
-        /// <returns>JSON string representing success or failure</returns>
+        /// <returns>JSON string representing current playlist</returns>
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Wrapped,
             UriTemplate = "addtrack/{id}")]
         string AddTrack(string id);
+
+
+        /// <summary>
+        /// Remove a track from the current playlist
+        /// </summary>
+        /// <param name="id">string representing the library track id</param>
+        /// <returns>JSON string representing current playlist</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "removetrack/{id}")]
+        string RemoveTrack(string id);
 
 
         /// <summary>

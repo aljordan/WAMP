@@ -383,6 +383,13 @@ namespace WhisperingAudioMusicPlayer
             return GetCurrentPlaylistJSON();
         }
 
+        public string RemoveTrackFromPlaylist(Track song)
+        {
+            currentPlaylist.RemoveSong(song);
+            lstNowPlaying.Items.Remove(song);
+            return GetCurrentPlaylistJSON();
+        }
+
         /// <summary>
         /// Poperty to set the current playlist.
         /// Begins playback if everything looks good.
