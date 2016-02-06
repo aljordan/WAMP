@@ -5,7 +5,9 @@ var breadCrumbArray = [];
 
 
 function escapeQuotes(word) {
-    return word.replace(/'/g, "\\'");
+    var step1 = word.replace(/'/g, "\\'");
+    var step2 = step1.replace(/\(/g, "\\(");
+    return step2.replace(/\)/g, "\\)");
 }
 
 
@@ -53,9 +55,9 @@ function paintPlaylist(playlistData) {
             '<span class="large"><a class="large" title="Play" onclick="playTrack(' + playlistData[count].Id + ')" href="#">'
             + playlistData[count].Title + '</a></span>'
             + '<div class="bar-right"><span class="large" style="text-align: right;"><a class="large" title="Remove" onclick="removeSongFromPlaylist(' + playlistData[count].Id + ')" href="#">'
-            + 'X</a></span></div><br>' +
-            '<span class="small"><a class="small" onclick="getAlbumsByArtist(\'' + escapeQuotes(playlistData[count].Artist) + '\')" href="#">' + playlistData[count].Artist + '</a></span><br>' +
-            '<span class="small"><a class="small" onclick="getSongsByAlbum(\'' + escapeQuotes(playlistData[count].Album) + '\')" href="#">' + playlistData[count].Album + '</a></span><br>' +
+            + 'x</a></span></div><br>' +
+            '<span class="small"><a class="small" title="Show albums" onclick="getAlbumsByArtist(\'' + escapeQuotes(playlistData[count].Artist) + '\')" href="#">' + playlistData[count].Artist + '</a></span><br>' +
+            '<span class="small"><a class="small" title="Show songs" onclick="getSongsByAlbum(\'' + escapeQuotes(playlistData[count].Album) + '\')" href="#">' + playlistData[count].Album + '</a></span><br>' +
             '</div><br>');
     }
 }
@@ -71,7 +73,7 @@ function getGenres() {
             var genres = $.parseJSON(data.GetGenresResult);
             for (var count = 0; count < genres.length; count++) {
                 $('#playlistEditor').append('<div>' +
-                    '<span class="large"><a class="large" onclick="getArtistsByGenre(\'' + escapeQuotes(genres[count]) + '\')" href="#">'
+                    '<span class="large"><a class="large" title="Show artists" onclick="getArtistsByGenre(\'' + escapeQuotes(genres[count]) + '\')" href="#">'
                     + genres[count] + '</a></span><br>' +
                     '</div>');
             }
@@ -91,9 +93,11 @@ function getArtists() {
             var artists = $.parseJSON(data.GetArtistsResult);
             for (var count = 0; count < artists.length; count++) {
                 $('#playlistEditor').append('<div>' +
-                    '<span class="large"><a class="large" onclick="getAlbumsByArtist(\'' + escapeQuotes(artists[count]) + '\')" href="#">'
-                    + artists[count] + '</a></span><br>' +
-                    '</div>');
+                    '<span class="large"><a class="large" title="Show albums" onclick="getAlbumsByArtist(\'' + escapeQuotes(artists[count]) + '\')" href="#">'
+                    + artists[count] + '</a></span>'
+                    + '<div class="bar-right"><span class="large"><a class="large" title="Add to playlist" onclick="addArtistToPlaylist(\'' + escapeQuotes(artists[count]) + '\')" href="#">'
+                    + '+</a></span></div><br>'
+                    + '<br></div>');
             }
             buildBreadCrumb('<a class="small" onclick="getArtists()" href="#">&nbsp;Artists</a>', true);
         }
@@ -111,9 +115,11 @@ function getAlbums() {
             var albums = $.parseJSON(data.GetAlbumsResult);
             for (var count = 0; count < albums.length; count++) {
                 $('#playlistEditor').append('<div>' +
-                    '<span class="large"><a class="large" onclick="getSongsByAlbum(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
-                    + albums[count] + '</a></span><br>' +
-                    '</div>');
+                    '<span class="large"><a class="large" title="Show songs" onclick="getSongsByAlbum(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+                    + albums[count] + '</a></span>'
+                    + '<div class="bar-right"><span class="large"><a class="large" title="Add to playlist" onclick="addAlbumToPlaylist(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+                    + '+</a></span></div><br>'
+                    + '<br></div>');
             }
             buildBreadCrumb('<a class="small" onclick="getAlbums()" href="#">&nbsp;Albums</a>', true);
         }
@@ -131,9 +137,11 @@ function getArtistsByGenre(genre) {
             var artists = $.parseJSON(data.GetArtistByGenreResult);
             for (var count = 0; count < artists.length; count++) {
                 $('#playlistEditor').append('<div>' +
-                    '<span class="large"><a class="large" onclick="getAlbumsByArtist(\'' + escapeQuotes(artists[count]) + '\')" href="#">'
-                    + artists[count] + '</a></span><br>' +
-                    '</div>');
+                    '<span class="large"><a class="large" title="Show albums" onclick="getAlbumsByArtist(\'' + escapeQuotes(artists[count]) + '\')" href="#">'
+                    + artists[count] + '</a></span>'
+                    + '<div class="bar-right"><span class="large"><a class="large" title="Add to playlist" onclick="addArtistToPlaylist(\'' + escapeQuotes(artists[count]) + '\')" href="#">'
+                    + '+</a></span></div><br>'
+                    + '<br></div>');
             }
             buildBreadCrumb('<a class="small" onclick="getArtistsByGenre(\'' + escapeQuotes(genre) + '\')" href="#">&nbsp;' + genre + '</a>', false);
         }
@@ -150,10 +158,11 @@ function getAlbumsByArtist(artist) {
             var albums = $.parseJSON(data.GetAlbumsByArtistResult);
             for (var count = 0; count < albums.length; count++) {
                 $('#playlistEditor').append('<div>' +
-                    '<span class="large"><a class="large" onclick="getSongsByAlbum(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
-                    + albums[count] + '</a></span><br>' +
-                    '</div>');
-
+                    '<span class="large"><a class="large" title="Show songs" onclick="getSongsByAlbum(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+                    + albums[count] + '</a></span>'
+                    + '<div class="bar-right"><span class="large"><a class="large" title="Add to playlist" onclick="addAlbumToPlaylist(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+                    + '+</a></span></div><br>'
+                    + '<br></div>');
             }
             buildBreadCrumb('<a class="small" onclick="getAlbumsByArtist(\'' + escapeQuotes(artist) + '\')" href="#">&nbsp;' + artist + '</a>', false);
         }
@@ -178,6 +187,9 @@ function getSongsByAlbum(album) {
         }
     });
 }
+
+
+
 
 function play() {
     var xhttp = new XMLHttpRequest();
@@ -269,8 +281,32 @@ function addSongToPlaylist(id) {
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            $("#playlist").empty();
             var currentPlaylistJson = $.parseJSON(data.AddTrackResult);
+            paintPlaylist(currentPlaylistJson);
+        }
+    });
+}
+
+function addAlbumToPlaylist(album) {
+    $.ajax({
+        url: 'http://localhost:9090/wamp/addalbum/' + album,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            var currentPlaylistJson = $.parseJSON(data.AddAlbumResult);
+            paintPlaylist(currentPlaylistJson);
+        }
+    });
+}
+
+
+function addArtistToPlaylist(artist) {
+    $.ajax({
+        url: 'http://localhost:9090/wamp/addartist/' + artist,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            var currentPlaylistJson = $.parseJSON(data.AddArtistResult);
             paintPlaylist(currentPlaylistJson);
         }
     });

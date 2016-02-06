@@ -383,6 +383,16 @@ namespace WhisperingAudioMusicPlayer
             return GetCurrentPlaylistJSON();
         }
 
+        public string AddTracksToPlaylist(List<Track> songs)
+        {
+            foreach (Track song in songs)
+            {
+                currentPlaylist.Add(song);
+                lstNowPlaying.Items.Add(song);
+            }
+            return GetCurrentPlaylistJSON();
+        }
+
         public string RemoveTrackFromPlaylist(Track song)
         {
             currentPlaylist.RemoveSong(song);

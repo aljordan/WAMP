@@ -183,6 +183,31 @@ namespace WhisperingAudioMusicPlayer
             UriTemplate = "addtrack/{id}")]
         string AddTrack(string id);
 
+        /// <summary>
+        /// Add an album to the current playlist
+        /// </summary>
+        /// <param name="album">string representing the album title</param>
+        /// <returns>JSON string representing current playlist</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "addalbum/{album}")]
+        string AddAlbum(string album);
+
+
+        /// <summary>
+        /// Add all tracks from an artist to the current playlist
+        /// </summary>
+        /// <param name="album">string representing the artist name</param>
+        /// <returns>JSON string representing current playlist</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "addartist/{artist}")]
+        string AddArtist(string artist);
+
 
         /// <summary>
         /// Remove a track from the current playlist

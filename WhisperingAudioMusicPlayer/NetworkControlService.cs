@@ -7,7 +7,7 @@ using WhisperingAudioMusicEngine;
 using WhisperingAudioMusicLibrary;
 using System.IO;
 using System.Web.Script.Serialization;
-
+using System.Collections.Generic;
 
 
 namespace WhisperingAudioMusicPlayer
@@ -128,6 +128,18 @@ namespace WhisperingAudioMusicPlayer
         {
             Track song = player.SelectedLibrary.GetSongById(Convert.ToInt64(id));
             return player.AddTrackToPlaylist(song);
+        }
+
+        public string AddAlbum(string album)
+        {
+            List<Track> songs = player.SelectedLibrary.GetSongsByAlbum(album);
+            return player.AddTracksToPlaylist(songs);
+        }
+
+        public string AddArtist(string artist)
+        {
+            List<Track> songs = player.SelectedLibrary.GetSongsByArtist(artist);
+            return player.AddTracksToPlaylist(songs);
         }
 
         public string RemoveTrack(string id)
