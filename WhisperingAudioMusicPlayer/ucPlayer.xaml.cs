@@ -317,6 +317,20 @@ namespace WhisperingAudioMusicPlayer
             return new JavaScriptSerializer().Serialize(currentPlaylist);
         }
 
+        public String GetCurrentSongInfo()
+        {
+            if (isPlaying)
+            {
+                int totalTime = musicEngine.GetTotalTrackTimeInSeconds();
+                int currentTime = musicEngine.GetCurrentTrackTimeInSeconds();
+                SongInfo info = new SongInfo(lblTitleContent.Content.ToString(), lblArtistContent.Content.ToString(),
+                    lblAlbumContent.Content.ToString(),totalTime, currentTime);
+                return new JavaScriptSerializer().Serialize(info);
+            }
+            else
+                return "";
+        }
+
         /// <summary>
         /// Property to set random playback of playlist.
         /// </summary>

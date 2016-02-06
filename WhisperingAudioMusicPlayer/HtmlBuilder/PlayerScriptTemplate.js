@@ -189,8 +189,6 @@ function getSongsByAlbum(album) {
 }
 
 
-
-
 function play() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -204,6 +202,26 @@ function play() {
     };
     xhttp.open("GET", "http://localhost:9090/wamp/play", true);
     xhttp.send();
+}
+
+
+// Once this method starts, it doesn't stop
+function getCurrentSongInfo() {
+    $.ajax({
+        url: 'http://localhost:9090/wamp/songinfo',
+        success: function (data) {
+            if (data.GetCurrentSongInfoResult !== "") {
+                var info = $.parseJSON(data.GetCurrentSongInfoResult);
+                document.getElementById("songName").innerHTML = info.SongTitle;
+                document.getElementById("artistName").innerHTML = '<a class="medium" onclick="getAlbumsByArtist(\'' + escapeQuotes(info.Artist) + '\')" href="#">' + info.Artist + '</a>';
+                document.getElementById("albumName").innerHTML = '<a class="medium" onclick="getSongsByAlbum(\'' + escapeQuotes(info.Album) + '\')" href="#">' + info.Album + '</a>';
+            }
+        },
+        complete: function () {
+            // Schedule the next request when the current one's complete
+            setTimeout(getCurrentSongInfo, 1000);
+        }
+    });
 }
 
 
@@ -343,6 +361,7 @@ function changeVolume(direction) {
 $(document).ready(function () {
     getVolume();
     populatePlaylist();
+    getCurrentSongInfo();
 });
 
 

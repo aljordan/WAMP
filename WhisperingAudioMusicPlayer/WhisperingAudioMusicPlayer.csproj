@@ -114,6 +114,7 @@
     <Compile Include="SelectPlaylistDialog.xaml.cs">
       <DependentUpon>SelectPlaylistDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SongInfo.cs" />
     <Compile Include="ucPlayer.xaml.cs">
       <DependentUpon>ucPlayer.xaml</DependentUpon>
     </Compile>

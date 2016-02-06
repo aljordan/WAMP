@@ -234,6 +234,18 @@ namespace WhisperingAudioMusicPlayer
         string GetVolume();
 
 
+        /// <summary>
+        /// Gets current playing song info in JSON. Blank string if nothing playing
+        /// </summary>
+        /// <returns>String</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "songinfo/")]
+        string GetCurrentSongInfo();
+
+
         void SetPlayer(ucPlayer master);
     }
 }

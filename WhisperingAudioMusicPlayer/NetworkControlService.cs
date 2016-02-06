@@ -153,6 +153,11 @@ namespace WhisperingAudioMusicPlayer
             return player.GetVolume();
         }
 
+        public string GetCurrentSongInfo()
+        {
+            return player.GetCurrentSongInfo();
+        }
+
         public string CurrentPlaylist()
         {
             return player.GetCurrentPlaylistJSON();
