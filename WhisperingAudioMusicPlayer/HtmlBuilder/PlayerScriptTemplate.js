@@ -2,6 +2,7 @@
 /*global $, jQuery*/
 
 var breadCrumbArray = [];
+var currentSongTitle = "";
 
 
 function escapeQuotes(word) {
@@ -195,7 +196,8 @@ function play() {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
             var Data = JSON.parse(xhttp.responseText);
             var track = $.parseJSON(Data.PlayResult);
-            document.getElementById("songName").innerHTML = track.Title;
+            //document.getElementById("songName").innerHTML = track.Title;
+            document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(\'' + escapeQuotes(track.Title) + '\')" href="#">' + track.Title + '</a>';
             document.getElementById("artistName").innerHTML = '<a class="medium" onclick="getAlbumsByArtist(\'' + escapeQuotes(track.Artist) + '\')" href="#">' + track.Artist + '</a>';
             document.getElementById("albumName").innerHTML = '<a class="medium" onclick="getSongsByAlbum(\'' + escapeQuotes(track.Album) + '\')" href="#">' + track.Album + '</a>';
         }
@@ -212,7 +214,13 @@ function getCurrentSongInfo() {
         success: function (data) {
             if (data.GetCurrentSongInfoResult !== "") {
                 var info = $.parseJSON(data.GetCurrentSongInfoResult);
-                document.getElementById("songName").innerHTML = info.SongTitle;
+                if (info.SongTitle !== currentSongTitle) {
+                    currentSongTitle = info.SongTitle;
+                    scrollToInPlaylist(info.SongTitle);
+                }
+
+                //document.getElementById("songName").innerHTML = info.SongTitle;
+                document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(\'' + escapeQuotes(info.SongTitle) + '\')" href="#">' + info.SongTitle + '</a>';
                 document.getElementById("artistName").innerHTML = '<a class="medium" onclick="getAlbumsByArtist(\'' + escapeQuotes(info.Artist) + '\')" href="#">' + info.Artist + '</a>';
                 document.getElementById("albumName").innerHTML = '<a class="medium" onclick="getSongsByAlbum(\'' + escapeQuotes(info.Album) + '\')" href="#">' + info.Album + '</a>';
             }
@@ -238,7 +246,8 @@ function next() {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
             var Data = JSON.parse(xhttp.responseText);
             var track = $.parseJSON(Data.NextResult);
-            document.getElementById("songName").innerHTML = track.Title;
+            //document.getElementById("songName").innerHTML = track.Title;
+            document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(\'' + escapeQuotes(track.Title) + '\')" href="#">' + track.Title + '</a>';
             document.getElementById("artistName").innerHTML = '<a class="medium" onclick="getAlbumsByArtist(\'' + escapeQuotes(track.Artist) + '\')" href="#">' + track.Artist + '</a>';
             document.getElementById("albumName").innerHTML = '<a class="medium" onclick="getSongsByAlbum(\'' + escapeQuotes(track.Album) + '\')" href="#">' + track.Album + '</a>';
         }
@@ -254,7 +263,8 @@ function previous() {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
             var Data = JSON.parse(xhttp.responseText);
             var track = $.parseJSON(Data.PreviousResult);
-            document.getElementById("songName").innerHTML = track.Title;
+            //document.getElementById("songName").innerHTML = track.Title;
+            document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(\'' + escapeQuotes(track.Title) + '\')" href="#">' + track.Title + '</a>';
             document.getElementById("artistName").innerHTML = '<a class="medium" onclick="getAlbumsByArtist(\'' + escapeQuotes(track.Artist) + '\')" href="#">' + track.Artist + '</a>';
             document.getElementById("albumName").innerHTML = '<a class="medium" onclick="getSongsByAlbum(\'' + escapeQuotes(track.Album) + '\')" href="#">' + track.Album + '</a>';
         }
@@ -284,7 +294,8 @@ function playTrack(id) {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
             var Data = JSON.parse(xhttp.responseText);
             var track = $.parseJSON(Data.PlayTrackResult);
-            document.getElementById("songName").innerHTML = track.Title;
+            //document.getElementById("songName").innerHTML = track.Title;
+            document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(\'' + escapeQuotes(track.Title) + '\')" href="#">' + track.Title + '</a>';
             document.getElementById("artistName").innerHTML = '<a class="medium" onclick="getAlbumsByArtist(\'' + escapeQuotes(track.Artist) + '\')" href="#">' + track.Artist + '</a>';
             document.getElementById("albumName").innerHTML = '<a class="medium" onclick="getSongsByAlbum(\'' + escapeQuotes(track.Album) + '\')" href="#">' + track.Album + '</a>';
         }
@@ -340,6 +351,8 @@ function removeSongFromPlaylist(id) {
             $("#playlist").empty();
             var currentPlaylistJson = $.parseJSON(data.RemoveTrackResult);
             paintPlaylist(currentPlaylistJson);
+            // the next line will cause the current song to be highlited in the playlist
+            currentSongTitle = "";
         }
     });
 }
@@ -356,6 +369,15 @@ function changeVolume(direction) {
     };
     xhttp.open("GET", url, true);
     xhttp.send();
+}
+
+function scrollToInPlaylist(title) {
+    $("#playlist > div > span > .large").css("color", "white");
+    //$("#playlist > div:contains(" + title + ")").css("color", "#ffcc00");
+    $("#playlist > div > span:contains(" + title + ") > .large").css("color", "#ffcc00");
+    //$parentDiv.scrollTop($parentDiv.scrollTop() + $innerListItem.position().top);
+    //$("#playlist").scrollTop($("#playlist").scrollTop() + $("#playlist > div:contains(" + title + ")").position().top);
+    //$("#playlist").scrollTop($("#playlist > div:contains(" + title + ")").position().top);
 }
 
 $(document).ready(function () {
