@@ -1,8 +1,9 @@
 ﻿/*jslint browser: true*/
 /*global $, jQuery*/
 
-var breadCrumbArray = [];
-var currentSongTitle = "";
+var breadCrumbArray = []; // for user's trail of functions
+var currentSongTitle = ""; // used to ee if the song has changed
+var timeoutHandle; // used to control timed callback to server
 
 
 function escapeQuotes(word) {
@@ -227,11 +228,18 @@ function getCurrentSongInfo() {
         },
         complete: function () {
             // Schedule the next request when the current one's complete
-            setTimeout(getCurrentSongInfo, 1000);
+            timeoutHandle =  setTimeout(getCurrentSongInfo, 1000);
         }
     });
 }
 
+function onBlur() {
+    clearTimeout(timeoutHandle);
+};
+
+function onFocus() {
+    getCurrentSongInfo();
+};
 
 function stop() {
     var xhttp = new XMLHttpRequest();
@@ -383,7 +391,15 @@ function scrollToInPlaylist(title) {
 $(document).ready(function () {
     getVolume();
     populatePlaylist();
-    getCurrentSongInfo();
+
+    //this controls the timed callback to the server. Only calls back when window is in focus.
+    if (/*@cc_on!@*/false) { // check for Internet Explorer
+        document.onfocusin = onFocus;
+        document.onfocusout = onBlur;
+    } else {
+        window.onfocus = onFocus;
+        window.onblur = onBlur;
+    }
 });
 
 
