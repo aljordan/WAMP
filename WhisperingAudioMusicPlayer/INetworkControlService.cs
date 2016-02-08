@@ -170,6 +170,20 @@ namespace WhisperingAudioMusicPlayer
             UriTemplate = "playtrack/{id}")]
         string PlayTrack(string id);
 
+        /// <summary>
+        /// Moves to a place in the currently playing song
+        /// </summary>
+        /// <param name="percentage>
+        /// A string representation of a decimal between 0 and 1 describing the percentage of the song to move to
+        /// </param>
+        /// <returns></returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "movesongto/{percentage}")]
+        void MoveToInSong(string percentage);
+
 
         /// <summary>
         /// Add a track to the current playlist

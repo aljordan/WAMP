@@ -124,6 +124,11 @@ namespace WhisperingAudioMusicPlayer
             return player.PlayPlaylistTrack(Convert.ToInt64(id));
         }
 
+        public void MoveToInSong(string percentage)
+        {
+            player.MoveToInSong(Convert.ToDecimal(percentage));
+        }
+
         public string AddTrack(string id)
         {
             Track song = player.SelectedLibrary.GetSongById(Convert.ToInt64(id));

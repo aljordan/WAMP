@@ -185,6 +185,20 @@ namespace WhisperingAudioMusicPlayer
             }
         }
 
+        
+        /// <summary>
+        /// Move to a particular percentage of the currently playing song
+        /// </summary>
+        /// <param name="percentage">Decimal between 0 and 1 describing the percentage of the song to move to.</param>
+        public void MoveToInSong(decimal percentage)
+        {
+            decimal moveTo = percentage * musicEngine.GetTotalTrackTimeInSeconds();
+            int moveToRounded = (int)Math.Round(moveTo);
+            if (moveToRounded <= musicEngine.GetTotalTrackTimeInSeconds())
+                musicEngine.MoveToPositionInSeconds(moveToRounded);
+        }
+
+
         /// <summary>
         /// Play a track in the current playlist
         /// </summary>

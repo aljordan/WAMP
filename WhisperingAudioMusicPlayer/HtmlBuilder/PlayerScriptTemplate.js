@@ -3,6 +3,7 @@
 
 var breadCrumbArray = []; // for user's trail of functions
 var currentSongTitle = ""; // used to ee if the song has changed
+var currentSongTotalTime = 0;
 var timeoutHandle; // used to control timed callback to server
 
 
@@ -215,6 +216,15 @@ function getCurrentSongInfo() {
         success: function (data) {
             if (data.GetCurrentSongInfoResult !== "") {
                 var info = $.parseJSON(data.GetCurrentSongInfoResult);
+
+                var progress = document.getElementById("songProgressBar");
+                var value = 0;
+                if (info.SongLength > 0) {
+                    value = Math.floor((100 / info.SongLength) * info.SongProgress);
+                }
+                progress.style.width = value + "%";
+                currentSongTotalTime = info.SongLength;
+
                 if (info.SongTitle !== currentSongTitle) {
                     currentSongTitle = info.SongTitle;
                     scrollToInPlaylist(info.SongTitle);
@@ -233,13 +243,50 @@ function getCurrentSongInfo() {
     });
 }
 
+
+// Add click event to the song progress bar
+$('.clickable').bind('click', function (ev) {
+    var $div = $('.clickable');
+    var totalWidth = $div.width();
+    var offset = $div.offset();
+    var clickedWidth = ev.clientX - offset.left;
+    var percentage = clickedWidth / totalWidth;
+
+    var url = "http://localhost:9090/wamp/movesongto/" + percentage;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+        }
+    };
+    xhttp.open("GET", url, true);
+    xhttp.send();
+});
+
+
+// Add mouse over event to the song progress bar.
+$('.clickable').bind('mousemove', function (ev) {
+    var $div = $('.clickable');
+    var totalWidth = $div.width();
+    var offset = $div.offset();
+    var clickedWidth = ev.clientX - offset.left;
+    var percentage = clickedWidth / totalWidth;
+    var time = percentage * currentSongTotalTime;
+    var minutes = Math.floor(time / 60);
+    var seconds = Math.floor(time - minutes * 60);
+    if (seconds < 10)
+        seconds = '0' + seconds;
+    var timeLabel = minutes + ':' + seconds;
+    $('.clickable').prop('title', timeLabel);
+});
+
+
 function onBlur() {
     clearTimeout(timeoutHandle);
-};
+}
 
 function onFocus() {
     getCurrentSongInfo();
-};
+}
 
 function stop() {
     var xhttp = new XMLHttpRequest();
