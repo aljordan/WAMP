@@ -380,12 +380,15 @@ function changeVolume(direction) {
 }
 
 function scrollToInPlaylist(title) {
+    // reset any currently hilighted song name to color white
     $("#playlist > div > span > .large").css("color", "white");
-    //$("#playlist > div:contains(" + title + ")").css("color", "#ffcc00");
+    //find and hilite current playing song title
     $("#playlist > div > span:contains(" + title + ") > .large").css("color", "#ffcc00");
-    //$parentDiv.scrollTop($parentDiv.scrollTop() + $innerListItem.position().top);
-    //$("#playlist").scrollTop($("#playlist").scrollTop() + $("#playlist > div:contains(" + title + ")").position().top);
-    //$("#playlist").scrollTop($("#playlist > div:contains(" + title + ")").position().top);
+
+    // scroll to (doesn't work as it scrolls to wrong place all the time)
+    $("#playlist").scrollTop(0);
+    var scrollpoint = $("#playlist > div > span:contains(" + title + ") > .large").offset().top - ($(".player").height() + 30 );
+    $("#playlist").scrollTop(scrollpoint);
 }
 
 $(document).ready(function () {
