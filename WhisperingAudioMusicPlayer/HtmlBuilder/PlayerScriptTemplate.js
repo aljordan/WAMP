@@ -244,7 +244,8 @@ function getCurrentSongInfo() {
 }
 
 
-// Add click event to the song progress bar
+// Add click event to the song progress bar.
+// Will move the current song to the time clicked.
 $('.clickable').bind('click', function (ev) {
     var $div = $('.clickable');
     var totalWidth = $div.width();
@@ -254,16 +255,17 @@ $('.clickable').bind('click', function (ev) {
 
     var url = "http://localhost:9090/wamp/movesongto/" + percentage;
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState === 4 && xhttp.status === 200) {
-        }
-    };
+    //xhttp.onreadystatechange = function () {
+    //    if (xhttp.readyState === 4 && xhttp.status === 200) {
+    //    }
+    //};
     xhttp.open("GET", url, true);
     xhttp.send();
 });
 
 
 // Add mouse over event to the song progress bar.
+// Displays the time the song will move to if clicked.
 $('.clickable').bind('mousemove', function (ev) {
     var $div = $('.clickable');
     var totalWidth = $div.width();

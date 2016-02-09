@@ -284,7 +284,7 @@ namespace WhisperingAudioMusicPlayer
         public string ChangeVolume(string direction)
         {
             if (!isVolumeEnabled)
-                return "not enabled";
+                return "disabled";
 
             double volume = sldrVolume.Value;
             switch (direction.ToLower())
