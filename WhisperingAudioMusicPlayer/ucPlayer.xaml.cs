@@ -293,11 +293,15 @@ namespace WhisperingAudioMusicPlayer
                     volume += 10;
                     if (volume > 601.0)
                         volume = 601;
+                    if (isAcourateVolumeEnabled)
+                        SendAcourateVolumeUpLarge(1);
                     break;
                 case "down":
                     volume -= 10;
                     if (volume < 0)
                         volume = 0;
+                    if (isAcourateVolumeEnabled)
+                        SendAcourateVolumeDownLarge(1);
                     break;
                 default:
                     return "Failure: Bad direction command";
@@ -905,15 +909,27 @@ namespace WhisperingAudioMusicPlayer
                 }
                 else
                 {
-                    string[] dirs = System.IO.Directory.GetFiles(folderPath, "*.jpg");
-                    if (dirs.Count() > 0)
+                    imageFile = folderPath + "\\cover.jpg";
+                    if (System.IO.File.Exists(imageFile))
                     {
                         albumImage.StretchDirection = StretchDirection.DownOnly;
-                        albumImage.Source = new BitmapImage(new Uri(dirs[0]));
+                        albumImage.Source = new BitmapImage(new Uri(imageFile));
+                        //ImageBrush background = new ImageBrush();
+                        //background.ImageSource = new BitmapImage( new Uri(imageFile));
+                        //playerMainGrid.Background = background;
                     }
                     else
                     {
-                        albumImage.Source = null;
+                        string[] dirs = System.IO.Directory.GetFiles(folderPath, "*.jpg");
+                        if (dirs.Count() > 0)
+                        {
+                            albumImage.StretchDirection = StretchDirection.DownOnly;
+                            albumImage.Source = new BitmapImage(new Uri(dirs[0]));
+                        }
+                        else
+                        {
+                            albumImage.Source = null;
+                        }
                     }
                 }
             }
