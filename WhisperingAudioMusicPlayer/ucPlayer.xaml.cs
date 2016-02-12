@@ -342,11 +342,24 @@ namespace WhisperingAudioMusicPlayer
                 int totalTime = musicEngine.GetTotalTrackTimeInSeconds();
                 int currentTime = musicEngine.GetCurrentTrackTimeInSeconds();
                 SongInfo info = new SongInfo(lblTitleContent.Content.ToString(), lblArtistContent.Content.ToString(),
-                    lblAlbumContent.Content.ToString(),totalTime, currentTime);
+                    lblAlbumContent.Content.ToString(),totalTime, currentTime, isPaused);
                 return new JavaScriptSerializer().Serialize(info);
             }
             else
                 return "";
+        }
+
+        public void TogglePlayPause()
+        {
+            if (!isPlaying)
+            {
+                btnPlay.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+                isPaused = false;
+            }
+            else
+            {
+                btnPause.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            }
         }
 
         /// <summary>

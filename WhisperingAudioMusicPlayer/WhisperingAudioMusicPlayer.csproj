@@ -246,6 +246,18 @@
     <Resource Include="images\btnSetLoopSmall.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="HtmlBuilder\images\Next.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="HtmlBuilder\images\Pause.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="HtmlBuilder\images\Play.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="HtmlBuilder\images\Stop.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="HtmlBuilder\PlayerHeaderTemplate.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -255,6 +267,21 @@
     <Content Include="HtmlBuilder\PlayerScriptTemplate.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="HtmlBuilder\images\Previous.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="HtmlBuilder\images\RepeatOff.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="HtmlBuilder\images\Repeat.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="HtmlBuilder\images\Shuffle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="HtmlBuilder\images\ShuffleOff.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.94.0\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.94.0\build\net45\System.Data.SQLite.Core.targets')" />

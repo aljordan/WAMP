@@ -98,6 +98,11 @@ namespace WhisperingAudioMusicPlayer
             return player.Play();
         }
 
+        public void TogglePlay()
+        {
+            player.TogglePlayPause();
+        }
+
         public string Stop()
         {
             player.Stop();
@@ -158,6 +163,26 @@ namespace WhisperingAudioMusicPlayer
             return player.GetVolume();
         }
 
+        public string GetRepeat()
+        {
+            return player.IsRepeating.ToString();
+        }
+
+        public void SetRepeat(string repeat)
+        {
+            player.IsRepeating = Convert.ToBoolean(repeat);
+        }
+
+        public string GetRandom()
+        {
+            return player.IsRandom.ToString();
+        }
+
+        public void SetRandom(string random)
+        {
+            player.IsRandom = Convert.ToBoolean(random);
+        }
+
         public string GetCurrentSongInfo()
         {
             return player.GetCurrentSongInfo();
@@ -194,6 +219,25 @@ namespace WhisperingAudioMusicPlayer
                 //}
             //}
         }
+
+
+        public Stream GetImage(string imageName)
+        {
+            string filePath = AppDomain.CurrentDomain.BaseDirectory + "HtmlBuilder\\images\\" + imageName;
+            if (File.Exists(filePath))
+            {
+                FileStream fs = File.OpenRead(filePath);
+                WebOperationContext.Current.OutgoingRequest.ContentType = "image/png";
+                return fs;
+            }
+            else
+            {
+                byte[] byteArray = Encoding.UTF8.GetBytes(" Requested Image does not exist :(");
+                MemoryStream strm = new MemoryStream(byteArray);
+                return strm;
+            }
+        }
+
 
     }
 }

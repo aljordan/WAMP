@@ -10,6 +10,8 @@ namespace WhisperingAudioMusicPlayer
         private string songTitle;
         private string artist;
         private string album;
+        private bool isPaused;
+
 
         public SongInfo() { }
 
@@ -26,10 +28,11 @@ namespace WhisperingAudioMusicPlayer
             this.songLength = length;
         }
 
-        public SongInfo(string title, string artist, string album, int length, int progress)
+        public SongInfo(string title, string artist, string album, int length, int progress, bool isPaused)
             : this(title, artist, album, length)
         {
             this.songProgress = progress;
+            this.isPaused = isPaused;
         }
 
         public string SongTitle
@@ -60,6 +63,12 @@ namespace WhisperingAudioMusicPlayer
         {
             get { return songProgress; }
             set { songProgress = value; }
+        }
+
+        public bool IsPaused
+        {
+            get { return isPaused; }
+            set { isPaused = value; }
         }
     }
 }

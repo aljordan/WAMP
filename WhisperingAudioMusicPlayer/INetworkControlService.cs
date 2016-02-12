@@ -67,6 +67,17 @@ namespace WhisperingAudioMusicPlayer
         string Play();
 
         /// <summary>
+        /// Toggles Play / Pause.
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "toggleplay/")]
+        void TogglePlay();
+
+        /// <summary>
         /// Stops the player
         /// </summary>
         /// <returns></returns>
@@ -247,7 +258,51 @@ namespace WhisperingAudioMusicPlayer
             UriTemplate = "volume/")]
         string GetVolume();
 
+        /// <summary>
+        /// Set repeat
+        /// </summary>
+        /// <param name="repeat">string that should be "true" or "false"</param>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "setrepeat/{repeat}")]
+        void SetRepeat(string repeat);
 
+        /// <summary>
+        /// Get repeat
+        /// </summary>
+        /// <returns>bool</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "getrepeat/")]
+        string GetRepeat();
+
+        /// <summary>
+        /// Set random
+        /// </summary>
+        /// <param name="repeat">string that should be "true" or "false"</param>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "setrandom/{random}")]
+        void SetRandom(string random);
+
+        /// <summary>
+        /// Get Random
+        /// </summary>
+        /// <returns>bool</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "getrandom/")]
+        string GetRandom();
+
+        
         /// <summary>
         /// Gets current playing song info in JSON. Blank string if nothing playing
         /// </summary>
@@ -258,6 +313,17 @@ namespace WhisperingAudioMusicPlayer
             BodyStyle = WebMessageBodyStyle.Wrapped,
             UriTemplate = "songinfo/")]
         string GetCurrentSongInfo();
+
+        /// <summary>
+        /// Get image for html page
+        /// </summary>
+        /// <param name="genre">image file name</param>
+        /// <returns>Stream of image file</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            BodyStyle = WebMessageBodyStyle.Bare,
+            UriTemplate = "getimage/{imageName}")]
+        Stream GetImage(string imageName);
 
 
         void SetPlayer(ucPlayer master);

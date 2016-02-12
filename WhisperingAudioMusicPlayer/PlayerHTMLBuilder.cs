@@ -60,7 +60,8 @@ namespace WhisperingAudioMusicPlayer
                 {
                     while ((line = sr.ReadLine()) != null)
                     {
-                        sb.AppendLine(line);
+                        //sb.AppendLine(line);
+                        sb.AppendLine(line.Replace("localhost", GetLocalIPAddress()));
                     }
                 }
             }

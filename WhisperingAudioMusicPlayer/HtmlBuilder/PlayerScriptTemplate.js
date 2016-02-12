@@ -208,6 +208,17 @@ function play() {
     xhttp.send();
 }
 
+function togglePlay() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+        }
+    };
+    xhttp.open("GET", "http://localhost:9090/wamp/toggleplay", true);
+    xhttp.send();
+}
+
+
 
 // Once this method starts, it doesn't stop
 function getCurrentSongInfo() {
@@ -234,6 +245,19 @@ function getCurrentSongInfo() {
                 document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(\'' + escapeQuotes(info.SongTitle) + '\')" href="#">' + info.SongTitle + '</a>';
                 document.getElementById("artistName").innerHTML = '<a class="medium" onclick="getAlbumsByArtist(\'' + escapeQuotes(info.Artist) + '\')" href="#">' + info.Artist + '</a>';
                 document.getElementById("albumName").innerHTML = '<a class="medium" onclick="getSongsByAlbum(\'' + escapeQuotes(info.Album) + '\')" href="#">' + info.Album + '</a>';
+
+
+                if ($("#imgPlayPause").attr("src").indexOf("Play.png") >= 0 && !info.IsPaused) {
+                    $("#imgPlayPause").attr("src", "http://localhost:9090/wamp/getimage/Pause.png");
+                }
+                else if ($("#imgPlayPause").attr("src").indexOf("Pause.png") >= 0 && info.IsPaused) {
+                    $("#imgPlayPause").attr("src", "http://localhost:9090/wamp/getimage/Play.png");
+                }
+            }
+            else {
+                if ($("#imgPlayPause").attr("src").indexOf("Pause.png") >= 0) {
+                    $("#imgPlayPause").attr("src", "http://localhost:9090/wamp/getimage/Play.png");
+                }
             }
         },
         complete: function () {
@@ -341,8 +365,100 @@ function getVolume() {
     };
     xhttp.open("GET", url, true);
     xhttp.send();
-
 }
+
+function getRepeat() {
+    var url = "http://localhost:9090/wamp/getrepeat/";
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+            var Data = JSON.parse(xhttp.responseText);
+            if (Data.GetRepeatResult === 'False')
+                $("#imgRepeat").attr("src", "http://localhost:9090/wamp/getimage/RepeatOff.png");
+            else
+                $("#imgRepeat").attr("src", "http://localhost:9090/wamp/getimage/Repeat.png");
+        }
+    };
+    xhttp.open("GET", url, true);
+    xhttp.send();
+}
+
+function toggleRepeat() {
+    var url = "http://localhost:9090/wamp/getrepeat/";
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+            var Data = JSON.parse(xhttp.responseText);
+            if (Data.GetRepeatResult === 'False')
+                setRepeat('true');
+            else
+                setRepeat('false');
+        }
+    };
+    xhttp.open("GET", url, true);
+    xhttp.send();
+}
+
+
+function setRepeat(repeat) {
+    var url = "http://localhost:9090/wamp/setrepeat/" + repeat;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+            getRepeat();
+        }
+    };
+    xhttp.open("GET", url, true);
+    xhttp.send();
+}
+
+
+function getRandom() {
+    var url = "http://localhost:9090/wamp/getrandom/";
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+            var Data = JSON.parse(xhttp.responseText);
+            if (Data.GetRandomResult === 'False')
+                $("#imgRandom").attr("src", "http://localhost:9090/wamp/getimage/ShuffleOff.png");
+            else
+                $("#imgRandom").attr("src", "http://localhost:9090/wamp/getimage/Shuffle.png");
+        }
+    };
+    xhttp.open("GET", url, true);
+    xhttp.send();
+}
+
+function toggleRandom() {
+    var url = "http://localhost:9090/wamp/getrandom/";
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+            var Data = JSON.parse(xhttp.responseText);
+            if (Data.GetRandomResult === 'False')
+                setRandom('true');
+            else
+                setRandom('false');
+        }
+    };
+    xhttp.open("GET", url, true);
+    xhttp.send();
+}
+
+
+function setRandom(random) {
+    var url = "http://localhost:9090/wamp/setrandom/" + random;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+            getRandom();
+        }
+    };
+    xhttp.open("GET", url, true);
+    xhttp.send();
+}
+
+
 
 function playTrack(id) {
     var url = "http://localhost:9090/wamp/playtrack/" + id;
@@ -443,6 +559,8 @@ function scrollToInPlaylist(title) {
 $(document).ready(function () {
     getVolume();
     populatePlaylist();
+    getRepeat();
+    getRandom();
 
     //this controls the timed callback to the server. Only calls back when window is in focus.
     if (/*@cc_on!@*/false) { // check for Internet Explorer
