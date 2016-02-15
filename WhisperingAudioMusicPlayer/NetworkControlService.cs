@@ -8,6 +8,9 @@ using WhisperingAudioMusicLibrary;
 using System.IO;
 using System.Web.Script.Serialization;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 
 namespace WhisperingAudioMusicPlayer
@@ -29,6 +32,8 @@ namespace WhisperingAudioMusicPlayer
         // launched, typw the following into an ADMINISTRATIVE Command Prompt:
         // netsh http add urlacl url=http://+:9090/ user="NTAuthority\Authenticated Users" sddl="D:(A;;GX;;;AU)"
         // I need to figure out if the Install Sheild project can do this automatically
+
+        // The above TODO has been completed as install events in the installer package.
 
         public void startNetworkService()
         {
@@ -238,6 +243,78 @@ namespace WhisperingAudioMusicPlayer
             }
         }
 
+        public Stream GetAlbumArtByAlbumTitle(string albumTitle)
+        {
+            Image img;
+            string path = player.SelectedLibrary.GetAlbumArtPathByAlbumName(albumTitle);
+            if (path != "")
+            {
+                img = Image.FromFile(path);
+                img = ResizeImage(img, new System.Drawing.Size(100, 100));
+            }
+            else
+            {
+                img = new Bitmap(100, 100);
+            }
+
+            MemoryStream memStream = new MemoryStream();
+            img.Save(memStream, ImageFormat.Jpeg);
+
+            memStream.Position = 0;
+            WebOperationContext.Current.OutgoingRequest.ContentType = "image/jpeg";
+            return memStream;
+        }
+
+        public Stream GetAlbumArtBySongId(string id)
+        {
+            Image img;
+            string path = player.SelectedLibrary.GetAlbumArtPathBySongID(Convert.ToInt64(id));
+            if (path != "")
+            {
+                img = Image.FromFile(path);
+                img = ResizeImage(img, new System.Drawing.Size(100, 100));
+            }
+            else
+            {
+                img = new Bitmap(100, 100);
+            }
+
+            MemoryStream memStream = new MemoryStream();
+            img.Save(memStream, ImageFormat.Jpeg);
+
+            memStream.Position = 0;
+            WebOperationContext.Current.OutgoingRequest.ContentType = "image/jpeg";
+            return memStream;
+        }
+
+
+        private static Image ResizeImage(Image image, Size size, bool preserveAspectRatio = true)
+        {
+            int newWidth;
+            int newHeight;
+            if (preserveAspectRatio)
+            {
+                int originalWidth = image.Width;
+                int originalHeight = image.Height;
+                float percentWidth = (float)size.Width / (float)originalWidth;
+                float percentHeight = (float)size.Height / (float)originalHeight;
+                float percent = percentHeight < percentWidth ? percentHeight : percentWidth;
+                newWidth = (int)(originalWidth * percent);
+                newHeight = (int)(originalHeight * percent);
+            }
+            else
+            {
+                newWidth = size.Width;
+                newHeight = size.Height;
+            }
+            Image newImage = new Bitmap(newWidth, newHeight);
+            using (Graphics graphicsHandle = Graphics.FromImage(newImage))
+            {
+                graphicsHandle.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphicsHandle.DrawImage(image, 0, 0, newWidth, newHeight);
+            }
+            return newImage;
+        }
 
     }
 }

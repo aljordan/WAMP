@@ -317,7 +317,7 @@ namespace WhisperingAudioMusicPlayer
         /// <summary>
         /// Get image for html page
         /// </summary>
-        /// <param name="genre">image file name</param>
+        /// <param name="imageName">image file name</param>
         /// <returns>Stream of image file</returns>
         [OperationContract]
         [WebInvoke(Method = "GET",
@@ -325,6 +325,27 @@ namespace WhisperingAudioMusicPlayer
             UriTemplate = "getimage/{imageName}")]
         Stream GetImage(string imageName);
 
+        /// <summary>
+        /// Get album art for album
+        /// </summary>
+        /// <param name="albumTitle">title of album</param>
+        /// <returns>Stream of image file</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            BodyStyle = WebMessageBodyStyle.Bare,
+            UriTemplate = "albumartbyalbumtitle/{albumTitle}")]
+        Stream GetAlbumArtByAlbumTitle(string albumTitle);
+
+        /// <summary>
+        /// Get album art for song
+        /// </summary>
+        /// <param name="albumTitle">title of album</param>
+        /// <returns>Stream of image file</returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            BodyStyle = WebMessageBodyStyle.Bare,
+            UriTemplate = "albumartbysongid/{id}")]
+        Stream GetAlbumArtBySongId(string id);
 
         void SetPlayer(ucPlayer master);
     }

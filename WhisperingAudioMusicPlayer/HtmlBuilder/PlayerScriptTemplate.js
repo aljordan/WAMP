@@ -53,16 +53,30 @@ function populatePlaylist() {
 
 function paintPlaylist(playlistData) {
     $("#playlist").empty();
+    //for (var count = 0; count < playlistData.length; count++) {
+    //    $('#playlist').append('<div>' +
+    //        '<span class="large"><a class="large" title="Play" onclick="playTrack(' + playlistData[count].Id + ')" href="#">'
+    //        + playlistData[count].Title + '</a></span>'
+    //        + '<div class="bar-right"><span class="large" style="text-align: right;"><a class="large" title="Remove" onclick="removeSongFromPlaylist(' + playlistData[count].Id + ')" href="#">'
+    //        + 'x</a></span></div><br>' +
+    //        '<span class="small"><a class="small" title="Show albums" onclick="getAlbumsByArtist(\'' + escapeQuotes(playlistData[count].Artist) + '\')" href="#">' + playlistData[count].Artist + '</a></span><br>' +
+    //        '<span class="small"><a class="small" title="Show songs" onclick="getSongsByAlbum(\'' + escapeQuotes(playlistData[count].Album) + '\')" href="#">' + playlistData[count].Album + '</a></span><br>' +
+    //        '</div><br>');
+    //}
+
+    $('#playlist').append('<table style="display: table; width: 100%; table-layout: fixed; position: absolute; top: 0;">');
     for (var count = 0; count < playlistData.length; count++) {
-        $('#playlist').append('<div>' +
-            '<span class="large"><a class="large" title="Play" onclick="playTrack(' + playlistData[count].Id + ')" href="#">'
-            + playlistData[count].Title + '</a></span>'
-            + '<div class="bar-right"><span class="large" style="text-align: right;"><a class="large" title="Remove" onclick="removeSongFromPlaylist(' + playlistData[count].Id + ')" href="#">'
-            + 'x</a></span></div><br>' +
-            '<span class="small"><a class="small" title="Show albums" onclick="getAlbumsByArtist(\'' + escapeQuotes(playlistData[count].Artist) + '\')" href="#">' + playlistData[count].Artist + '</a></span><br>' +
-            '<span class="small"><a class="small" title="Show songs" onclick="getSongsByAlbum(\'' + escapeQuotes(playlistData[count].Album) + '\')" href="#">' + playlistData[count].Album + '</a></span><br>' +
-            '</div><br>');
+        $('#playlist').append('<tr>'
+            + '<td style="width:115px; height: 100px"><img src="http://localhost:9090/wamp/albumartbysongid/' + playlistData[count].Id + '" /></td>'
+            + '<td  id="' + playlistData[count].Id + '" valign="top" sytle="overflow: hidden; height:100px; vertical-align:middle;"><span class="large"><a class="large" title="Play" onclick="playTrack(' + playlistData[count].Id + ')" href="#">'
+            + playlistData[count].Title + '</a></span><br>'
+            + '<span class="small"><a class="small" title="Show albums" onclick="getAlbumsByArtist(\'' + escapeQuotes(playlistData[count].Artist) + '\')" href="#">' + playlistData[count].Artist + '</a></span><br>'
+            + '<span class="small"><a class="small" title="Show songs" onclick="getSongsByAlbum(\'' + escapeQuotes(playlistData[count].Album) + '\')" href="#">' + playlistData[count].Album + '</a></span></td>'
+            + '<td valign="top" align="center" class="large" style="width:30px;"><span class="large" style="text-align: right;"><a class="large" title="Remove" onclick="removeSongFromPlaylist(' + playlistData[count].Id + ')" href="#">'
+            + 'x</a></span></td>'
+            + '</tr>');
     }
+    $('#playlist').append('</table>');
 }
 
 
@@ -116,14 +130,38 @@ function getAlbums() {
         success: function (data) {
             $('#playlistEditor').empty();
             var albums = $.parseJSON(data.GetAlbumsResult);
+            //for (var count = 0; count < albums.length; count++) {
+            //    $('#playlistEditor').append('<div>'
+            //        + '<img style="vertical-align: middle;" src="http://localhost:9090/wamp/albumartbyalbumtitle/' + albums[count] + '" />&nbsp;'
+            //        + '<span class="large" sytle="overflow: hidden;"><a class="large" title="Show songs" onclick="getSongsByAlbum(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+            //        + albums[count] + '</a></span>'
+            //        + '<div class="bar-right"><span class="large"><a class="large" title="Add to playlist" onclick="addAlbumToPlaylist(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+            //        + '+</a></span></div><br>'
+            //        + '<br></div>');
+            //}
+
+            //for (var count = 0; count < albums.length; count++) {
+            //    $('#playlistEditor').append('<div style="width:100%; margin-bottom:5px; margin-top:5px;">'
+            //        + '<div class="albumArt"><img src="http://localhost:9090/wamp/albumartbyalbumtitle/' + albums[count] + '" /></div>'
+            //        + '<div style="line-height: 100px; vertical-align: middle; white-space: nowrap; overflowL hidden;" class="large" sytle="overflow: hidden;"><a class="large" title="Show songs" onclick="getSongsByAlbum(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+            //        + albums[count] + '</a></div>'
+            //        + '<div class="bar-right"><span class="large"><a class="large" title="Add to playlist" onclick="addAlbumToPlaylist(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+            //        + '+</a></span></div>'
+            //        + '</div><br clear="all">');
+            //}
+ 
+            $('#playlistEditor').append('<table style="display: table; width: 100%; table-layout: fixed; position: absolute; top: 0;">');
             for (var count = 0; count < albums.length; count++) {
-                $('#playlistEditor').append('<div>' +
-                    '<span class="large"><a class="large" title="Show songs" onclick="getSongsByAlbum(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
-                    + albums[count] + '</a></span>'
-                    + '<div class="bar-right"><span class="large"><a class="large" title="Add to playlist" onclick="addAlbumToPlaylist(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
-                    + '+</a></span></div><br>'
-                    + '<br></div>');
+                $('#playlistEditor').append('<tr>'
+                    + '<td style="width:115px; height: 100px"><img src="http://localhost:9090/wamp/albumartbyalbumtitle/' + albums[count] + '" /></td>'
+                    + '<td valign="middle" class="large" sytle="overflow: hidden; height:100px; vertical-align:middle;"><a class="large" title="Show songs" onclick="getSongsByAlbum(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+                    + albums[count] + '</a></td>'
+                    + '<td valign="middle" align="center" class="large" style="width:30px;"><a class="large" title="Add to playlist" onclick="addAlbumToPlaylist(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+                    + '+</a></td>'
+                    + '</tr>');
             }
+            $('#playlistEditor').append('</table>');
+
             buildBreadCrumb('<a class="small" onclick="getAlbums()" href="#">&nbsp;Albums</a>', true);
         }
     });
@@ -159,14 +197,29 @@ function getAlbumsByArtist(artist) {
         success: function (data) {
             $('#playlistEditor').empty();
             var albums = $.parseJSON(data.GetAlbumsByArtistResult);
+            //for (var count = 0; count < albums.length; count++) {
+            //    $('#playlistEditor').append('<div>' +
+            //        '<span class="large"><a class="large" title="Show songs" onclick="getSongsByAlbum(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+            //        + albums[count] + '</a></span>'
+            //        + '<div class="bar-right"><span class="large"><a class="large" title="Add to playlist" onclick="addAlbumToPlaylist(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+            //        + '+</a></span></div><br>'
+            //        + '<br></div>');
+            //}
+
+
+            $('#playlistEditor').append('<table style="display: table; width: 100%; table-layout: fixed; position: absolute; top: 0;">');
             for (var count = 0; count < albums.length; count++) {
-                $('#playlistEditor').append('<div>' +
-                    '<span class="large"><a class="large" title="Show songs" onclick="getSongsByAlbum(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
-                    + albums[count] + '</a></span>'
-                    + '<div class="bar-right"><span class="large"><a class="large" title="Add to playlist" onclick="addAlbumToPlaylist(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
-                    + '+</a></span></div><br>'
-                    + '<br></div>');
+                $('#playlistEditor').append('<tr>'
+                    + '<td style="width:115px; height: 100px"><img src="http://localhost:9090/wamp/albumartbyalbumtitle/' + albums[count] + '" /></td>'
+                    + '<td valign="middle" class="large" sytle="overflow: hidden; height:100px; vertical-align:middle;"><a class="large" title="Show songs" onclick="getSongsByAlbum(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+                    + albums[count] + '</a></td>'
+                    + '<td valign="middle" align="center" class="large" style="width:30px;"><a class="large" title="Add to playlist" onclick="addAlbumToPlaylist(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+                    + '+</a></td>'
+                    + '</tr>');
             }
+            $('#playlistEditor').append('</table>');
+
+
             buildBreadCrumb('<a class="small" onclick="getAlbumsByArtist(\'' + escapeQuotes(artist) + '\')" href="#">&nbsp;' + artist + '</a>', false);
         }
     });
@@ -199,7 +252,7 @@ function play() {
             var Data = JSON.parse(xhttp.responseText);
             var track = $.parseJSON(Data.PlayResult);
             //document.getElementById("songName").innerHTML = track.Title;
-            document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(\'' + escapeQuotes(track.Title) + '\')" href="#">' + track.Title + '</a>';
+            document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(' + track.Id + ')" href="#">' + track.Title + '</a>';
             document.getElementById("artistName").innerHTML = '<a class="medium" onclick="getAlbumsByArtist(\'' + escapeQuotes(track.Artist) + '\')" href="#">' + track.Artist + '</a>';
             document.getElementById("albumName").innerHTML = '<a class="medium" onclick="getSongsByAlbum(\'' + escapeQuotes(track.Album) + '\')" href="#">' + track.Album + '</a>';
         }
@@ -238,11 +291,12 @@ function getCurrentSongInfo() {
 
                 if (info.SongTitle !== currentSongTitle) {
                     currentSongTitle = info.SongTitle;
-                    scrollToInPlaylist(info.SongTitle);
+                    //scrollToInPlaylist(info.SongTitle);
+                    scrollToInPlaylist(info.Id);
                 }
 
                 //document.getElementById("songName").innerHTML = info.SongTitle;
-                document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(\'' + escapeQuotes(info.SongTitle) + '\')" href="#">' + info.SongTitle + '</a>';
+                document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(' + info.Id + ')" href="#">' + info.SongTitle + '</a>';
                 document.getElementById("artistName").innerHTML = '<a class="medium" onclick="getAlbumsByArtist(\'' + escapeQuotes(info.Artist) + '\')" href="#">' + info.Artist + '</a>';
                 document.getElementById("albumName").innerHTML = '<a class="medium" onclick="getSongsByAlbum(\'' + escapeQuotes(info.Album) + '\')" href="#">' + info.Album + '</a>';
 
@@ -328,7 +382,7 @@ function next() {
             var Data = JSON.parse(xhttp.responseText);
             var track = $.parseJSON(Data.NextResult);
             //document.getElementById("songName").innerHTML = track.Title;
-            document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(\'' + escapeQuotes(track.Title) + '\')" href="#">' + track.Title + '</a>';
+            document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(' + track.Id + ')" href="#">' + track.Title + '</a>';
             document.getElementById("artistName").innerHTML = '<a class="medium" onclick="getAlbumsByArtist(\'' + escapeQuotes(track.Artist) + '\')" href="#">' + track.Artist + '</a>';
             document.getElementById("albumName").innerHTML = '<a class="medium" onclick="getSongsByAlbum(\'' + escapeQuotes(track.Album) + '\')" href="#">' + track.Album + '</a>';
         }
@@ -345,7 +399,7 @@ function previous() {
             var Data = JSON.parse(xhttp.responseText);
             var track = $.parseJSON(Data.PreviousResult);
             //document.getElementById("songName").innerHTML = track.Title;
-            document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(\'' + escapeQuotes(track.Title) + '\')" href="#">' + track.Title + '</a>';
+            document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(' + track.Id + ')" href="#">' + track.Title + '</a>';
             document.getElementById("artistName").innerHTML = '<a class="medium" onclick="getAlbumsByArtist(\'' + escapeQuotes(track.Artist) + '\')" href="#">' + track.Artist + '</a>';
             document.getElementById("albumName").innerHTML = '<a class="medium" onclick="getSongsByAlbum(\'' + escapeQuotes(track.Album) + '\')" href="#">' + track.Album + '</a>';
         }
@@ -468,7 +522,7 @@ function playTrack(id) {
             var Data = JSON.parse(xhttp.responseText);
             var track = $.parseJSON(Data.PlayTrackResult);
             //document.getElementById("songName").innerHTML = track.Title;
-            document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(\'' + escapeQuotes(track.Title) + '\')" href="#">' + track.Title + '</a>';
+            document.getElementById("songName").innerHTML = '<a class="medium" onclick="scrollToInPlaylist(' + track.Id + ')" href="#">' + track.Title + '</a>';
             document.getElementById("artistName").innerHTML = '<a class="medium" onclick="getAlbumsByArtist(\'' + escapeQuotes(track.Artist) + '\')" href="#">' + track.Artist + '</a>';
             document.getElementById("albumName").innerHTML = '<a class="medium" onclick="getSongsByAlbum(\'' + escapeQuotes(track.Album) + '\')" href="#">' + track.Album + '</a>';
         }
@@ -544,17 +598,30 @@ function changeVolume(direction) {
     xhttp.send();
 }
 
-function scrollToInPlaylist(title) {
-    // reset any currently hilighted song name to color white
-    $("#playlist > div > span > .large").css("color", "white");
-    //find and hilite current playing song title
-    $("#playlist > div > span:contains(" + title + ") > .large").css("color", "#ffcc00");
+//function scrollToInPlaylist(title) {
+//    // reset any currently hilighted song name to color white
+//    $("#playlist > div > span > .large").css("color", "white");
+//    //find and hilite current playing song title
+//    $("#playlist > div > span:contains(" + title + ") > .large").css("color", "#ffcc00");
 
-    // scroll to (doesn't work as it scrolls to wrong place all the time)
+//    // scroll to (doesn't work as it scrolls to wrong place all the time)
+//    $("#playlist").scrollTop(0);
+//    var scrollpoint = $("#playlist > div > span:contains(" + title + ") > .large").offset().top - ($(".player").height() + 30 );
+//    $("#playlist").scrollTop(scrollpoint);
+//}
+
+function scrollToInPlaylist(id) {
+    // reset any currently hilighted song name to color white
+    $("#playlist > tr > td").css("color", "white");
+    //find and hilite current playing song id
+    $('#' + id).css("color", "#ffcc00");
+
+    // scroll to current playing song in playlist
     $("#playlist").scrollTop(0);
-    var scrollpoint = $("#playlist > div > span:contains(" + title + ") > .large").offset().top - ($(".player").height() + 30 );
+    var scrollpoint = $('#' + id).offset().top - ($(".player").height() + 30);
     $("#playlist").scrollTop(scrollpoint);
 }
+
 
 $(document).ready(function () {
     getVolume();

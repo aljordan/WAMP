@@ -342,7 +342,7 @@ namespace WhisperingAudioMusicPlayer
                 int totalTime = musicEngine.GetTotalTrackTimeInSeconds();
                 int currentTime = musicEngine.GetCurrentTrackTimeInSeconds();
                 SongInfo info = new SongInfo(lblTitleContent.Content.ToString(), lblArtistContent.Content.ToString(),
-                    lblAlbumContent.Content.ToString(),totalTime, currentTime, isPaused);
+                    lblAlbumContent.Content.ToString(), currentTrack.Id, totalTime, currentTime, isPaused);
                 return new JavaScriptSerializer().Serialize(info);
             }
             else
@@ -907,12 +907,12 @@ namespace WhisperingAudioMusicPlayer
             //lblBitDepthContent.Content = musicEngine.BitDepth;
             lblSampleRateContent.Content = musicEngine.SampleRate;
 
-            //folder image
+            //album art
             try
             {
-                string folderPath = t.FilePath.Substring(0, t.FilePath.LastIndexOf('\\'));
-                string imageFile = folderPath + "\\folder.jpg";
-                if (System.IO.File.Exists(imageFile))
+                //string imageFile = selectedLibrary.GetAlbumArtPathByAlbumName(t.Album);
+                string imageFile = selectedLibrary.GetAlbumArtPathBySongID(t.Id);
+                if (imageFile != "")
                 {
                     albumImage.StretchDirection = StretchDirection.DownOnly;
                     albumImage.Source = new BitmapImage(new Uri(imageFile));
@@ -922,28 +922,7 @@ namespace WhisperingAudioMusicPlayer
                 }
                 else
                 {
-                    imageFile = folderPath + "\\cover.jpg";
-                    if (System.IO.File.Exists(imageFile))
-                    {
-                        albumImage.StretchDirection = StretchDirection.DownOnly;
-                        albumImage.Source = new BitmapImage(new Uri(imageFile));
-                        //ImageBrush background = new ImageBrush();
-                        //background.ImageSource = new BitmapImage( new Uri(imageFile));
-                        //playerMainGrid.Background = background;
-                    }
-                    else
-                    {
-                        string[] dirs = System.IO.Directory.GetFiles(folderPath, "*.jpg");
-                        if (dirs.Count() > 0)
-                        {
-                            albumImage.StretchDirection = StretchDirection.DownOnly;
-                            albumImage.Source = new BitmapImage(new Uri(dirs[0]));
-                        }
-                        else
-                        {
-                            albumImage.Source = null;
-                        }
-                    }
+                    albumImage.Source = null;
                 }
             }
             catch (Exception)
@@ -951,9 +930,8 @@ namespace WhisperingAudioMusicPlayer
                 albumImage.Source = null;
                 Console.WriteLine("Trapped exception loading album art");
             }
-
-
         }
+
 
         private void SetVolumeLabel(double newValue)
         {
