@@ -13,6 +13,71 @@ function escapeQuotes(word) {
     return step2.replace(/\)/g, "\\)");
 }
 
+function search() {
+    switch ($('#slctSearch').val()) {
+        case "artist":
+            $.ajax({
+                url: 'http://localhost:9090/wamp/search/' + $('#txtSearch').val() + '/' + $('#slctSearch').val(),
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#playlistEditor').empty();
+                    var artists = $.parseJSON(data.SearchResult);
+                    for (var count = 0; count < artists.length; count++) {
+                        $('#playlistEditor').append('<div>' +
+                            '<span class="large"><a class="large" title="Show albums" onclick="getAlbumsByArtist(\'' + escapeQuotes(artists[count]) + '\')" href="#">'
+                            + artists[count] + '</a></span>'
+                            + '<div class="bar-right"><span class="large"><a class="large" title="Add to playlist" onclick="addArtistToPlaylist(\'' + escapeQuotes(artists[count]) + '\')" href="#">'
+                            + '+</a></span></div><br>'
+                            + '<br></div>');
+                    }
+                }
+            });
+            break;
+
+        case "album":
+            $.ajax({
+                url: 'http://localhost:9090/wamp/search/' + $('#txtSearch').val() + '/' + $('#slctSearch').val(),
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#playlistEditor').empty();
+                    var albums = $.parseJSON(data.SearchResult);
+                    $('#playlistEditor').append('<table style="display: table; width: 100%; table-layout: fixed; position: absolute; top: 0;">');
+                    for (var count = 0; count < albums.length; count++) {
+                        $('#playlistEditor').append('<tr>'
+                            + '<td style="width:115px; height: 100px"><img src="http://localhost:9090/wamp/albumartbyalbumtitle/' + albums[count] + '" /></td>'
+                            + '<td valign="middle" class="large" sytle="overflow: hidden; height:100px; vertical-align:middle;"><a class="large" title="Show songs" onclick="getSongsByAlbum(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+                            + albums[count] + '</a></td>'
+                            + '<td valign="middle" align="center" class="large" style="width:30px;"><a class="large" title="Add to playlist" onclick="addAlbumToPlaylist(\'' + escapeQuotes(albums[count]) + '\')" href="#">'
+                            + '+</a></td>'
+                            + '</tr>');
+                    }
+                    $('#playlistEditor').append('</table>');
+                }
+            });
+            break;
+
+        case "song":
+            $.ajax({
+                url: 'http://localhost:9090/wamp/search/' + $('#txtSearch').val() + '/' + $('#slctSearch').val(),
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#playlistEditor').empty();
+                    var songs = $.parseJSON(data.SearchResult);
+                    for (var count = 0; count < songs.length; count++) {
+                        $('#playlistEditor').append('<div>' +
+                            '<span class="large"><a class="large" title="Add to playlist" onclick="addSongToPlaylist(\'' + songs[count].Id + '\')" href="#">'
+                            + songs[count].Title + '</a></span><br>' +
+                            '</div>');
+                    }
+                }
+            });
+            break;
+    }
+}
+
 
 function buildBreadCrumb(crumb, restart) {
     if (restart === true) {
@@ -628,6 +693,14 @@ $(document).ready(function () {
     populatePlaylist();
     getRepeat();
     getRandom();
+
+    // for when Enter key is pressed in the search textbox.
+    document.getElementById('txtSearch').onkeydown = function (event) {
+        var e = event || window.event;
+        if (e.keyCode == 13) {
+            search();
+        }
+    }
 
     //this controls the timed callback to the server. Only calls back when window is in focus.
     if (/*@cc_on!@*/false) { // check for Internet Explorer

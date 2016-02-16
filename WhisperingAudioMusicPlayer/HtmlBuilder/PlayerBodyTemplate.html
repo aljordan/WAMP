@@ -1,0 +1,89 @@
+﻿<div class="wrapper">
+    <div class="left">
+        <div class="menu">
+            <table>
+                <tr>
+                    <td><a class="medium" onclick="getArtists()" href="#">Artists&nbsp;</a></td>
+                    <td><a class="medium" onclick="getAlbums()" href="#">&nbsp;Albums&nbsp;</a></td>
+                    <td><a class="medium" onclick="getGenres()" href="#">&nbsp;Genres</a></td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>
+                        <div id="breadcrumb">&nbsp;</div>
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td><input type="text" placeholder="search" id="txtSearch"></td>
+                    <td>
+                        <select id="slctSearch">
+                            <option value="song">Song</option>
+                            <option value="artist">Artist</option>
+                            <option value="album">Album</option>
+                        </select>
+                    </td>
+                    <td><button onclick="search()">Search</button></td>
+                </tr>
+            </table>
+            <!-- Div outside of table is pulling horizintal line up when text gets placed in it 
+            <div id="breadcrumb"></div>-->
+        </div>
+        <hr>
+
+        <div id="playlistEditor" class="playlistEditor"></div>
+    </div>
+    <div class="right">
+        <div class="player">
+            <div class="left">
+                <table class="center">
+                    <tr>
+                        <td colspan="6">Whispering Audio Music Player</td>
+                    </tr>
+                    <tr>
+                        <td><img onclick="previous()" src="http://localhost:9090/wamp/getimage/Previous.png" /></td>
+<!--                        <td><img onclick="play()" src="http://localhost:9090/wamp/getimage/Play.png" /></td>-->
+                        <td><img id="imgPlayPause" onclick="togglePlay()" src="http://localhost:9090/wamp/getimage/Play.png" /></td>
+                        <td><img onclick="stop()" src="http://localhost:9090/wamp/getimage/Stop.png" /></td>
+                        <td><img onclick="next()" src="http://localhost:9090/wamp/getimage/Next.png" /></td>
+                        <td><img id="imgRandom" onclick="toggleRandom()" src="http://localhost:9090/wamp/getimage/ShuffleOff.png" /></td>
+                        <td><img id="imgRepeat" onclick="toggleRepeat()" src="http://localhost:9090/wamp/getimage/RepeatOff.png" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button type="button" onclick="changeVolume('down')">-</button></td>
+                        <td colspan="4"><span class="small" id="volumeLabel">Volume: </span></td>
+                        <td>
+                            <button type="button" onclick="changeVolume('up')">+</button></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="right">
+<!--                 <div style="padding-top: 4px; color: #ffcc00; ">
+                   <span id="songName"></span>
+                    <br>
+                    <span id="artistName"></span>
+                    <br>
+                    <span id="albumName"></span>
+
+                </div>-->
+                <table style="width: 100%; white-space: nowrap; table-layout: fixed; color: #ffcc00;">
+                    <tr><td><span id="songName">&nbsp;</span></td></tr>
+                    <tr><td><span id="artistName">&nbsp;</span></td></tr>
+                    <tr><td><span id="albumName">&nbsp;</span></td></tr>
+                </table>
+
+                <div class='clickable'>
+                    <div class='display'>
+                        <div id="songProgressBar" class="progress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+        <div id="playlist" class="playlist"></div>
+    </div>
+</div>

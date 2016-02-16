@@ -170,6 +170,22 @@ namespace WhisperingAudioMusicPlayer
         string GetSongsByAlbum(string album);
 
         /// <summary>
+        /// Searches the music library by artist, album, or song.
+        /// </summary>
+        /// <param name="searchText">The text to search for</param>
+        /// <param name="searchType">should be "artist", "album", or "song"</param>
+        /// <returns>String representation of json representing a list of Tracks for song search,
+        /// a list of artist names for artist search, or a list of album names for album search.
+        /// </returns>
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            UriTemplate = "search/{searchtext}/{searchtype}")]
+        string Search(string searchText, string searchType);
+
+
+        /// <summary>
         /// Play a specific playlist track
         /// </summary>
         /// <param name="id">string representing the library track id</param>

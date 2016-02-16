@@ -91,12 +91,26 @@ namespace WhisperingAudioMusicPlayer
         {
             return new JavaScriptSerializer().Serialize(player.SelectedLibrary.GetAlbumsByArtist(artist));
         }
-
+        
         public string GetSongsByAlbum(string album)
         {
             return new JavaScriptSerializer().Serialize(player.SelectedLibrary.GetSongsByAlbum(album));
         }
 
+        public string Search(string searchText, string searchType)
+        {
+            switch (searchType)
+            {
+                case "artist":
+                    return new JavaScriptSerializer().Serialize(player.SelectedLibrary.GetArtists(searchText));
+                case "album":
+                    return new JavaScriptSerializer().Serialize(player.SelectedLibrary.GetAlbums(searchText));
+                case "song":
+                    return new JavaScriptSerializer().Serialize(player.SelectedLibrary.GetSongs(searchText));
+                default:
+                    return "Bad search type: searchType should be album, artist, or song.";
+            }
+        }
 
         public string Play()
         {
