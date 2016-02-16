@@ -13,11 +13,16 @@ function escapeQuotes(word) {
     return step2.replace(/\)/g, "\\)");
 }
 
+function escapeQuoteForURL(word) {
+    return word.replace(/'/g, "''");
+}
+
+
 function search() {
     switch ($('#slctSearch').val()) {
         case "artist":
             $.ajax({
-                url: 'http://localhost:9090/wamp/search/' + $('#txtSearch').val() + '/' + $('#slctSearch').val(),
+                url: 'http://localhost:9090/wamp/search/' + escapeQuoteForURL($('#txtSearch').val()) + '/' + $('#slctSearch').val(),
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
@@ -37,7 +42,7 @@ function search() {
 
         case "album":
             $.ajax({
-                url: 'http://localhost:9090/wamp/search/' + $('#txtSearch').val() + '/' + $('#slctSearch').val(),
+                url: 'http://localhost:9090/wamp/search/' + escapeQuoteForURL($('#txtSearch').val()) + '/' + $('#slctSearch').val(),
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
@@ -60,7 +65,7 @@ function search() {
 
         case "song":
             $.ajax({
-                url: 'http://localhost:9090/wamp/search/' + $('#txtSearch').val() + '/' + $('#slctSearch').val(),
+                url: 'http://localhost:9090/wamp/search/' + escapeQuoteForURL($('#txtSearch').val()) + '/' + $('#slctSearch').val(),
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
